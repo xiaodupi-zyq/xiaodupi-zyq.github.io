@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小六子的鱼的个人博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="链表缓存大小一定，当缓存满了之后，如何清理呢，三种策略：先进先出策略FIFO，最少使用策略LFU，最近最少使用策略LRU 如何使用链表实现LRU缓存淘汰策略呢？ 首先数组是一块连续的内存空间来存储，对内存要求很高。而链表不需要一块连续的内存空间，通过指针将一堆零散的内存块连起来使用。链表分为单链表，双链表和循环链表插入和删除链表的随机访问没有数组好，需要O(n)的时间复杂度 循环链表和双向链表，循">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/index.html">
+<meta property="og:site_name" content="小六子的鱼的个人博客">
+<meta property="og:description" content="链表缓存大小一定，当缓存满了之后，如何清理呢，三种策略：先进先出策略FIFO，最少使用策略LFU，最近最少使用策略LRU 如何使用链表实现LRU缓存淘汰策略呢？ 首先数组是一块连续的内存空间来存储，对内存要求很高。而链表不需要一块连续的内存空间，通过指针将一堆零散的内存块连起来使用。链表分为单链表，双链表和循环链表插入和删除链表的随机访问没有数组好，需要O(n)的时间复杂度 循环链表和双向链表，循">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/单链表.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/插入和删除.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/循环链表.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/双向链表.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/指针丢失.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/举例画图.jpg">
+<meta property="og:updated_time" content="2020-06-16T13:29:32.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链表">
+<meta name="twitter:description" content="链表缓存大小一定，当缓存满了之后，如何清理呢，三种策略：先进先出策略FIFO，最少使用策略LFU，最近最少使用策略LRU 如何使用链表实现LRU缓存淘汰策略呢？ 首先数组是一块连续的内存空间来存储，对内存要求很高。而链表不需要一块连续的内存空间，通过指针将一堆零散的内存块连起来使用。链表分为单链表，双链表和循环链表插入和删除链表的随机访问没有数组好，需要O(n)的时间复杂度 循环链表和双向链表，循">
+<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2020/06/16/链表/单链表.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2020/06/16/链表/">
+
+
+
+
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <title>链表 | 小六子的鱼的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/xiaodupi-zyq/xiaodupi-zyq.github.io"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png?resize=149%2C149" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小六子的鱼的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无穷的伟大,也是从“一”开始的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2020/06/16/链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小六子的鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小六子的鱼的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">链表</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-16T21:28:53+08:00">
+                2020-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/16/链表/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/06/16/链表/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><p>缓存大小一定，当缓存满了之后，如何清理呢，三种策略：先进先出策略FIFO，最少使用策略LFU，最近最少使用策略LRU</p>
+<p>如何使用链表实现LRU缓存淘汰策略呢？</p>
+<p>首先数组是一块连续的内存空间来存储，对内存要求很高。而链表不需要一块连续的内存空间，通过指针将一堆零散的内存块连起来使用。<br>链表分为单链表，双链表和循环链表<br><img src="/2020/06/16/链表/单链表.jpg" alt="单链表"><br>插入和删除<br><img src="/2020/06/16/链表/插入和删除.jpg" alt="插入和删除"><br>链表的随机访问没有数组好，需要O(n)的时间复杂度</p>
+<p>循环链表和双向链表，循环链表是一种特殊的单链表，即尾指针指向了链表的头节点。<br><img src="/2020/06/16/链表/循环链表.jpg" alt="循环链表"><br>双向链表不光只有后向指针还有前向指针<br><img src="/2020/06/16/链表/双向链表.jpg" alt="双向链表"><br>双向链表可以支持 O(1) 时间复杂度的情况下找到前驱结点</p>
+<p>尽管单纯的删除操作时间复杂度是 O(1)，但遍历查找的时间是主要的耗时点，对应的时间复杂度为 O(n)。根据时间复杂度分析中的加法法则，删除值等于给定值的结点对应的链表操作的总时间复杂度为 O(n)。</p>
+<p>如果我们希望在链表的某个指定结点前面插入一个结点，双向链表比单链表有很大的优势。双向链表可以在 O(1) 时间复杂度搞定，而单向链表需要 O(n) 的时间复杂度</p>
+<p>对链表进行频繁的插入、删除操作，还会导致频繁的内存申请和释放，容易造成内存碎片，如果是 Java 语言，就有可能会导致频繁的 GC（Garbage Collection，垃圾回收）</p>
+<p>LRU算法的实现：<br>维护一个有序单链表，越靠近尾部的节点是越早之前访问的，当有一个新的数据比访问时，我们从链表头开始遍历链表</p>
+<ol>
+<li>如果此数据之前已经被缓存在链表中了，我们遍历得到这个数据对应的结点，并将其从原来的位置删除，然后再插入到链表的头部。</li>
+<li>如果此数据没有在缓存链表中，又可以分为两种情况：<br>如果此时缓存未满，则将此结点直接插入到链表的头部；<br>如果此时缓存已满，则链表尾结点删除，将新的数据结点插入链表的头部。</li>
+</ol>
+<h3 id="几个写链表代码的技巧"><a href="#几个写链表代码的技巧" class="headerlink" title="几个写链表代码的技巧"></a>几个写链表代码的技巧</h3><h3 id="技巧一：理解指针或引用的含义"><a href="#技巧一：理解指针或引用的含义" class="headerlink" title="技巧一：理解指针或引用的含义"></a>技巧一：理解指针或引用的含义</h3><p>将某个变量赋值给指针，实际上就是将这个变量的地址赋值给指针，或者反过来说，指针中存储了这个变量的内存地址，指向了这个变量，通过指针就能找到这个变量。<br>经常会有这样的代码：p-&gt;next=q。这行代码是说，p 结点中的 next 指针存储了 q 结点的内存地址。</p>
+<h3 id="技巧二：警惕指针丢失和内存泄漏"><a href="#技巧二：警惕指针丢失和内存泄漏" class="headerlink" title="技巧二：警惕指针丢失和内存泄漏"></a>技巧二：警惕指针丢失和内存泄漏</h3><p><img src="/2020/06/16/链表/指针丢失.jpg" alt="指针丢失"><br>使用以下代码就将指针丢失了</p>
+<pre><code>p-&gt;next = x;
+x-&gt;next = p-&gt;next;
+</code></pre><p>这样的结果最后是x的指针指向x<br>插入结点时，一定要注意操作的顺序，如果上述代码，交换位置就是正确的了，x-&gt;next指向b，再把结点 a 的 next 指针指向结点 x，这样才不会丢失指针，导致内存泄漏。</p>
+<h3 id="技巧三：利用哨兵简化实现难度"><a href="#技巧三：利用哨兵简化实现难度" class="headerlink" title="技巧三：利用哨兵简化实现难度"></a>技巧三：利用哨兵简化实现难度</h3><p>如果在结点P后插入新结点，正确的代码为：</p>
+<pre><code>new_node-&gt;next = p-&gt;next;
+p-&gt;next = new_node;
+</code></pre><p>但如果要向空链表中插入第一个结点，刚刚逻辑不能用，而应该是这样的</p>
+<pre><code>if(head == null){
+    head = new_node;
+}
+</code></pre><p>删除结点</p>
+<pre><code>p-&gt;next = p-&gt;next-&gt;next;
+</code></pre><p>最后一个结点删除</p>
+<pre><code>if(head-&gt;next == null){
+    head = null;
+}
+</code></pre><p>针对链表的插入、删除操作，需要对插入第一个结点和删除最后一个结点的情况进行特殊处理</p>
+<p>如果我们引入哨兵结点，在任何时候，不管链表是不是空，head 指针都会一直指向这个哨兵结点。我们也把这种有哨兵结点的链表叫带头链表。</p>
+<h3 id="技巧四：重点留意边界条件处理"><a href="#技巧四：重点留意边界条件处理" class="headerlink" title="技巧四：重点留意边界条件处理"></a>技巧四：重点留意边界条件处理</h3><p>代码在一些边界或者异常情况下，最容易产生Bug。</p>
+<p><strong>检查边界条件：（也是其他编程时考虑的方法）</strong></p>
+<ol>
+<li>如果链表为空时，代码是否正常工作；</li>
+<li>如果链表只含一个结点时，代码是否正常工作；</li>
+<li>如果链表只含两个结点时，代码是否正常工作；</li>
+<li>代码逻辑在处理头节点和尾节点的时候，代码是否正常工作；</li>
+</ol>
+<h3 id="技巧五：举例画图，辅助思考"><a href="#技巧五：举例画图，辅助思考" class="headerlink" title="技巧五：举例画图，辅助思考"></a>技巧五：举例画图，辅助思考</h3><p>举例法和画图法<br><img src="/2020/06/16/链表/举例画图.jpg" alt="举例画图"><br>将要做的操作进行基本的画图操作。</p>
+<h3 id="技巧六：多写多练，没有捷径"><a href="#技巧六：多写多练，没有捷径" class="headerlink" title="技巧六：多写多练，没有捷径"></a>技巧六：多写多练，没有捷径</h3><p>几个常用链表操作，多写多练</p>
+<ol>
+<li>单链表反转</li>
+<li>链表中环的检测</li>
+<li>两个有序的链表合并</li>
+<li>删除链表倒数第n个结点</li>
+<li><p>求链表中间结点</p>
+<pre><code>public class MyLinked {
+private Node1 head;
+private Node1 last;
+MyLinked() throws Exception{
+    this(5);
+}
+MyLinked(int capacity) throws Exception{
+    this(&apos;a&apos;,capacity,false);
+}
+MyLinked(char c,int capacity,boolean random) throws Exception{
+    if(capacity &lt;= 0){
+        throw new Exception(&quot;链表容量不能为空或负&quot;);
+    }
+    char ch = c;
+    for(int i = 0; i &lt; capacity; i++){
+        Node1 node = new Node1();
+        node.c = ch;
+        if(!random){
+            ch++;
+        }else{
+            Random rand = new Random();
+            ch+=rand.nextInt(5);
+        }
+
+        if(i == 0){
+            head = node;
+            last = node;
+        }else{
+            last.node = node;
+            last = node;
+        }
+
+    }
+    last.node = null;
+}
+
+public void out(){
+    Node1 p = new Node1();
+    p = head;
+    while (p != null){
+        System.out.print(p.c + &quot; &quot;);
+        p = p.node;
+    }
+    System.out.println();
+}
+
+public void reverse(){
+    Node1 newLast = head;
+    Node1 newHead = head;
+
+    Node1 t = head.node;
+    while (t != null){
+        Node1 node = new Node1();
+        node = t;
+        t = t.node;
+        node.node = newHead;
+        newHead = node;
+    }
+    newLast.node = null; //记得最后链表节点为null
+    last = newLast;
+    head = newHead;
+}
+
+//环的检测，快慢指针
+public boolean isCircle(){
+    if(head == last){
+        return false;
+    }
+    Node1 p = head;
+    Node1 q = head;
+
+    while(q.node != null &amp;&amp; q.node.node != null &amp;&amp; q != null){
+        q = q.node.node;
+        p = p.node;
+        if(q == p){
+            return true;
+        }
+    }
+    return false;
+}
+
+//有序链表合并
+public MyLinked merge(MyLinked myLinked1,MyLinked myLinked2) throws Exception {
+    MyLinked mergeLinked = new MyLinked(1);
+    Node1 head1 = myLinked1.head;
+    Node1 head2 = myLinked2.head;
+    Node1 mergehead = mergeLinked.head;
+
+    while(head1 != null &amp;&amp; head2 != null){
+        if(head1.c &lt;= head2.c){
+            mergehead.node = head1;
+            head1 = head1.node;
+        }else{
+            mergehead.node = head2;
+            head2 = head2.node;
+        }
+        mergehead = mergehead.node;
+    }
+    if(head1 != null){
+        mergehead.node = head1;
+        mergeLinked.head = mergeLinked.head.node;
+        mergeLinked.last = myLinked1.last;
+    }else{
+        mergehead.node = head2;
+        mergeLinked.head = mergeLinked.head.node;
+        mergeLinked.last = myLinked1.last;
+    }
+    return mergeLinked;
+}
+
+public void deleteLastNNode(int n){
+    Node1 p = new Node1();
+    Node1 q = new Node1();
+    p.node = q.node = head;
+    for(int i = 0; i &lt; n;i++){
+        if(p == null){
+            System.out.println(&quot;链表总长不足： &quot; + n);
+            return;
+        }
+        p = p.node;
+    }
+    while (p != last){
+        p = p.node;
+        q = q.node;
+    }
+    if(q.node == head){
+        head = head.node;
+        return;
+    }
+    q.node = q.node.node;
+
+}
+
+public Node1 middle(){
+    Node1 p = head;
+    Node1 q = head;
+    while(p.node != null &amp;&amp; p.node.node != null){
+        p = p.node.node;
+        q = q.node;
+    }
+    return q;
+}
+</code></pre></li>
+</ol>
+<pre><code>public static void main(String[] args) throws Exception{
+    MyLinked myLinked = new MyLinked(10);
+    myLinked.out();
+
+    System.out.println(&quot;是否有环：&quot;);
+    System.out.println(myLinked.isCircle());
+    myLinked.last.node = myLinked.head;
+    System.out.println(myLinked.isCircle());
+    myLinked.last.node = null;
+
+    System.out.println(&quot;求链表中间结点：&quot;);
+    Node1 middle = myLinked.middle();
+    System.out.println(middle.c);
+
+    System.out.println(&quot;反转链表：&quot;);
+    myLinked.reverse();
+    myLinked.out();
+
+    System.out.println(&quot;链表合并：&quot;);
+    MyLinked myLinked1 = new MyLinked(&apos;a&apos;,4,true);
+    myLinked1.out();
+    MyLinked myLinked2 = new MyLinked(&apos;c&apos;,2,true);
+    myLinked2.out();
+    MyLinked mergeLinked = new MyLinked(1);
+    mergeLinked = myLinked.merge(myLinked1,myLinked2);
+    mergeLinked.out();
+
+    System.out.println(&quot;删除倒数第n个结点：&quot;);
+    myLinked.deleteLastNNode(5);
+    myLinked.out();
+
+}
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="小六子的鱼 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="小六子的鱼 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/12/HashMap/" rel="next" title="HashMap自我详细理解">
+                <i class="fa fa-chevron-left"></i> HashMap自我详细理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/16/二叉树/" rel="prev" title="二叉树">
+                二叉树 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="小六子的鱼">
+            
+              <p class="site-author-name" itemprop="name">小六子的鱼</p>
+              <p class="site-description motion-element" itemprop="description">某211大学研究生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://xiaodupi-zyq.github.io/" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xiaoliuzizyq@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xiao-ya-ma-xiao-liu-zi/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://neowyj.github.io/" title="Neowyj" target="_blank">Neowyj</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.arflow.cn/t/4" title="ARFlow" target="_blank">ARFlow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://snailclimb.top/JavaGuide/#/?id=java" title="JavaGuide" target="_blank">JavaGuide</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#链表"><span class="nav-number">1.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#几个写链表代码的技巧"><span class="nav-number">1.0.1.</span> <span class="nav-text">几个写链表代码的技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧一：理解指针或引用的含义"><span class="nav-number">1.0.2.</span> <span class="nav-text">技巧一：理解指针或引用的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧二：警惕指针丢失和内存泄漏"><span class="nav-number">1.0.3.</span> <span class="nav-text">技巧二：警惕指针丢失和内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧三：利用哨兵简化实现难度"><span class="nav-number">1.0.4.</span> <span class="nav-text">技巧三：利用哨兵简化实现难度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧四：重点留意边界条件处理"><span class="nav-number">1.0.5.</span> <span class="nav-text">技巧四：重点留意边界条件处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧五：举例画图，辅助思考"><span class="nav-number">1.0.6.</span> <span class="nav-text">技巧五：举例画图，辅助思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧六：多写多练，没有捷径"><span class="nav-number">1.0.7.</span> <span class="nav-text">技巧六：多写多练，没有捷径</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小六子的鱼</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xiaodupi-zyq',
+            repo: 'xiaodupi-zyq.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'e1a77ed9b132282a57f403268aaa78d5f51a9be0',
+            
+                client_id: 'b54fdaa7dadc52682b4b'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

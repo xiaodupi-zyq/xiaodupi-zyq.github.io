@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小六子的鱼的个人博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="初识动态规划：如何解决双十一购物时的凑单问题双十一，总有很多比如满200减50的活动，假设女朋友购物车中有n个（n&amp;gt;100)商品，在凑够满减条件的前提下，让选出的商品价格总和最大程度上接近满减条件200元，如何使用程序搞定呢？ 动态规划学习路线动态规划适合求解最优问题，比如最大值，最小值等等； 三部分学习：第一节通过两个经典问题展示为什么要使用动态规划以及动态规划解题方法是如何演化过来的？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划上：初识">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/index.html">
+<meta property="og:site_name" content="小六子的鱼的个人博客">
+<meta property="og:description" content="初识动态规划：如何解决双十一购物时的凑单问题双十一，总有很多比如满200减50的活动，假设女朋友购物车中有n个（n&amp;gt;100)商品，在凑够满减条件的前提下，让选出的商品价格总和最大程度上接近满减条件200元，如何使用程序搞定呢？ 动态规划学习路线动态规划适合求解最优问题，比如最大值，最小值等等； 三部分学习：第一节通过两个经典问题展示为什么要使用动态规划以及动态规划解题方法是如何演化过来的？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/0-1背包递归树.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/0-1背包状态转移表.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/0-1背包最大价值递归树.jpg">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/杨辉三角.jpg">
+<meta property="og:updated_time" content="2020-06-16T14:01:29.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="动态规划上：初识">
+<meta name="twitter:description" content="初识动态规划：如何解决双十一购物时的凑单问题双十一，总有很多比如满200减50的活动，假设女朋友购物车中有n个（n&amp;gt;100)商品，在凑够满减条件的前提下，让选出的商品价格总和最大程度上接近满减条件200元，如何使用程序搞定呢？ 动态规划学习路线动态规划适合求解最优问题，比如最大值，最小值等等； 三部分学习：第一节通过两个经典问题展示为什么要使用动态规划以及动态规划解题方法是如何演化过来的？">
+<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/0-1背包递归树.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/">
+
+
+
+
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <title>动态规划上：初识 | 小六子的鱼的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/xiaodupi-zyq/xiaodupi-zyq.github.io"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png?resize=149%2C149" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小六子的鱼的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无穷的伟大,也是从“一”开始的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2020/06/16/初识动态规划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小六子的鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小六子的鱼的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">动态规划上：初识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-16T21:59:01+08:00">
+                2020-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/16/初识动态规划/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/06/16/初识动态规划/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="初识动态规划：如何解决双十一购物时的凑单问题"><a href="#初识动态规划：如何解决双十一购物时的凑单问题" class="headerlink" title="初识动态规划：如何解决双十一购物时的凑单问题"></a>初识动态规划：如何解决双十一购物时的凑单问题</h1><p>双十一，总有很多比如满200减50的活动，假设女朋友购物车中有n个（n&gt;100)商品，在凑够满减条件的前提下，让选出的商品价格总和最大程度上接近满减条件200元，如何使用程序搞定呢？</p>
+<h2 id="动态规划学习路线"><a href="#动态规划学习路线" class="headerlink" title="动态规划学习路线"></a>动态规划学习路线</h2><p>动态规划适合求解最优问题，比如最大值，最小值等等；</p>
+<p>三部分学习：<br>第一节通过两个经典问题展示为什么要使用动态规划以及动态规划解题方法是如何演化过来的？</p>
+<p>第二节总结动态规划适合解决问题的特征，以及动态规划解题思路；</p>
+<p>第三节动态规划的实际应用；</p>
+<h2 id="0-1背包问题"><a href="#0-1背包问题" class="headerlink" title="0-1背包问题"></a>0-1背包问题</h2><p>贪心算法中的背包问题物品是可以分割的，回溯算法中物品不可以分割，只是回溯算法中我们要穷举所有可能的方法，时间复杂度是指数级的，回溯算法的实现方法如下：</p>
+<pre><code>private int maxW = Integer.MIN_VALUE; //结果放在maxW中
+private int[] weight = {2,2,4,6,3}; //物品重量
+private int n = 5; //物品个数
+private int w = 9; //背包容量
+public void f(int i,int cw){ //调用方法f(0,0)
+    if(cw == w || i == n){
+        if(cw &gt; maxW) maxW = cw;
+        return;
+    }
+    f(i+1,cw);//选择不装第i件物品
+    if(cw + weight[i] &lt;= w){
+        f(i+1,cw + weight[i]); //选择装下第i件物品
+    }
+}
+</code></pre><p>将上述的过程画成递归树的形式就是：<br><img src="/2020/06/16/初识动态规划/0-1背包递归树.jpg" alt="0-1背包递归树"></p>
+<p>其中每一个节点表示一种状态，(i,cw)表示，i表示第i件物品是否装入背包，cw表示当前背包中物品的总重量。</p>
+<p>在上述图中发现有些子问题是重复的，可以借助递归那一节讲的备忘录，将计算好的f(i,cw)存储起来，下次直接取用，改造之后的代码是：</p>
+<pre><code>private int maxW = Integer.MIN_VALUE;
+private int[] weight = {2,2,4,6,3};
+private int n = 5;
+private int w = 9;
+private boolean[][] mem = new boolean[5][10];//5个物品，10个重量
+
+public void f(int i,int cw){
+    if(cw == w || i == n){
+        if(cw &gt; maxW){
+            maxW = cw;
+        }
+    }
+    if(mem[i][cw]) return; //判断是否是重复状态
+    mem[i][cw] = true; //及时记录已经访问过的状态
+    f(i+1,cw);//第i个物品不放入
+    if(cw + weight[i] &lt;= w){
+        f(i+1,cw + weight[i]);//第i个物品放入
+    }
+}
+</code></pre><p>这种解决方法已经和动态规划执行效率差不多了。</p>
+<p>我们把整个求解过程分为n个阶段，每个阶段会决策一个物品是否放入背包，每个物品的决策之后，背包中的物品重量会有很多情况，也就是说会达到多种不同的状态，对应到递归树中有很多不同的节点；</p>
+<p>我们把每一层的重复状态进行合并，只记录不同的状态，然后基于上一层的状态集合，推导下一层的状态集合，通过合并每一层的状态，保证了每一层不同状态的个数不会超过w个；</p>
+<p>我们使用一个二维数组states[n][w+1],来记录可以达到的不同状态；</p>
+<p>第 0 个（下标从 0 开始编号）物品的重量是 2，要么装入背包，要么不装入背包，决策完之后，会对应背包的两种状态，背包中物品的总重量是 0 或者 2。我们用 states[0][0]=true 和 states[0][2]=true 来表示这两种状态。</p>
+<p>第 1 个物品的重量也是 2，基于之前的背包状态，在这个物品决策完之后，不同的状态有 3 个，背包中物品总重量分别是 0(0+0)，2(0+2 or 2+0)，4(2+2)。我们用 states[1][0]=true，states[1][2]=true，states[1][4]=true 来表示这三种状态；</p>
+<p>以此类推考察完所有的物品之后，整个states数组就计算好了，整个过程如图所示:</p>
+<p><img src="/2020/06/16/初识动态规划/0-1背包状态转移表.jpg" alt="0-1背包状态转移表"></p>
+<p>上述的过程比较翻译成代码就是：</p>
+<pre><code>public int knapsack(int[] weight,int n,int w){
+    boolean[][] states = new boolean[n][w+1]; //默认为false
+    states[0][0] = true; //第一行数据特殊处理
+    if(weight[0] &lt;= w){
+        states[0][weight[0]] = true;
+    }
+    for(int i = 1; i &lt; n; i++){ //动态规划状态转移
+        for(int j = 0; j &lt;= w;++j){ //不把第i件物品放入
+            if(states[i-1][j]){
+                states[i][j] = states[i-1][j];
+            }
+        }
+        for(int j = 0;j &lt; w - weight[i];j++){//把第i件物品放入
+            if(states[i-1][j]){
+                states[i][j+weight[i]] = true;
+            }
+        }
+    }
+    for(int i = w; i &gt;= 0; i--){
+        if(states[n-1][i]){
+            return i;
+        }
+    }
+    return 0;
+}
+</code></pre><p>实际上这是一种记录每一个阶段可达的状态集合，然后通过当前阶段的动态集合，来推导下一阶段的状态集合；</p>
+<p>耗时最多的部分就是代码中的两层 for 循环，所以时间复杂度是 O(n*w)。n 表示物品个数，w 表示背包可以承载的总重量。</p>
+<p>如果物品很多，怎么办？<br>尽管动态规划的执行效率比较高，但是就刚刚的代码实现来说，我们需要额外申请一个 n 乘以 w+1 的二维数组，对空间的消耗比较多;</p>
+<p>改进方法使用一个一维数组就可以了：</p>
+<pre><code>public int knapsack1(int[] weight,int n,int w){
+    boolean[] states = new boolean[w+1]; //默认为false
+    states[0] = true; //第一行数据特殊处理
+    if(weight[0] &lt;= w){
+        states[weight[0]] = true;
+    }
+    for(int i = 1; i &lt; n; i++){ //动态规划状态转移
+        for(int j = w - weight[i]; j &gt;= 0;--j) { //把第i件物品放入
+            if (states[j]) {
+                states[j + weight[i]] = true;
+            }
+        }
+    }
+    for(int i = w; i &gt;= 0; i--){
+        if(states[i]){
+            return i;
+        }
+    }
+    return 0;
+}
+</code></pre><h2 id="0-1背包问题升级版"><a href="#0-1背包问题升级版" class="headerlink" title="0-1背包问题升级版"></a>0-1背包问题升级版</h2><p>如果在上述问题的基础上引入物品价值这一变量，在满足最大重量的前提下，背包中可以装入的总价值最大是多少呢？</p>
+<pre><code>private int maxV = Integer.MIN_VALUE;
+private int[] items = {2,2,4,6,3};
+private int[] value = {3,4,8,9,6};
+private int n = 5;
+private int w = 9;
+
+/**
+ * 回溯算法
+ * @param i
+ * @param cw
+ * @param cv
+ */
+public void f(int i,int cw,int cv){
+    if(cw == w || i == n){
+        if(cv &gt; maxV){
+            maxV = cv;
+        }
+    }
+    f(i+1,cw,cv);
+    if(cw + items[i] &lt;= w){
+        f(i + 1,cw + items[i],cv + value[i]);
+    }
+}
+</code></pre><p>画出相应的递归树为：<br><img src="/2020/06/16/初识动态规划/0-1背包最大价值递归树.jpg" alt="0-1背包最大价值递归树"></p>
+<p>在上述的过程中存在很多的重复节点，我们每次都在记录相应的状态集；</p>
+<p>我们用一个二维数组 states[n][w+1]，来记录每层可以达到的不同状态。不过这里数组存储的值不再是 boolean 类型的了，而是当前状态对应的最大总价值。我们把每一层中 (i, cw) 重复的状态（节点）合并，只记录 cv 值最大的那个状态，然后基于这些状态来推导下一层的状态。</p>
+<pre><code>public static int knapsack3(int[] weight,int[] value,int n,int w){
+    int[][] states = new int[n][w+1];
+    //初始化
+    for(int i = 0; i &lt; n; i++){
+        for(int j = 0; j &lt; w + 1;j++){
+            states[i][j] = -1; //此时记录的状态图应该是价格值，并且相同的情况取最大价格
+        }
+    }
+    states[0][0] = 0;
+    if(weight[0] &lt;= w){
+        states[0][weight[0]] = value[0];
+    }
+    for(int i = 1; i &lt; n; i++){
+        for(int j = 0; j &lt;= w; j++){
+            if(states[i-1][j] &gt;= 0){
+                states[i][j] = states[i-1][j];//不放入i物品
+            }
+        }
+        for(int j = 0; j &lt; w-weight[i]; j++){
+            if(states[i-1][j] &gt;= 0){
+                int v = states[i-1][j] + value[i];
+                if(v &gt; states[i][j+weight[i]]){
+                    states[i][j+weight[i]] = v;
+                }
+            }
+        }
+    }
+    //找出最大值
+    int maxvalue = -1;
+    for (int j = 0; j &lt;= w; ++j){
+        if (states[n-1][j] &gt; maxvalue)
+            maxvalue = states[n-1][j];
+    }
+    return maxvalue;
+}
+</code></pre><p>跟上一个例子类似，空间复杂度也是可以优化的，你可以自己写一下。</p>
+<h2 id="解答开篇"><a href="#解答开篇" class="headerlink" title="解答开篇"></a>解答开篇</h2><p>对于这个问题，你当然可以利用回溯算法，穷举所有的排列组合，看大于等于 200 并且最接近 200 的组合是哪一个？但是，这样效率太低了点，时间复杂度非常高，是指数级的。</p>
+<p>实际上是0-1背包的变形问题，我们要找的是大于等于 200（满减条件）的值中最小的，所以就不能设置为 200 加 1 了。就这个实际问题而言，如果要买的东西比200多很多，就没有了意义；</p>
+<p>其次就是还有找到相应的物品是那些；</p>
+<pre><code>/**
+ * 双十一凑单
+ * @param items
+ * @param n
+ * @param w
+ */
+public static void double11advance(int[] items,int n,int w){
+    boolean[][] states = new boolean[n][3*w+1];
+    states[0][0] = true;
+    if(items[0] &lt;= 3*w){
+        states[0][items[0]] = true;
+    }
+    for(int i = 1; i &lt; n; i++){
+        for(int j = 0; j &lt;= 3*w;j++){
+            if(states[i-1][j]) {
+                states[i][j] = states[i-1][j];
+            }
+        }
+        for(int j = 0; j &lt; 3*w-items[i]; j++){
+            if(states[i-1][j]){
+                states[i][j+items[i]] = true;
+            }
+        }
+    }
+
+    int j;
+    for(j = w; j &lt; 3*w+1;j++){ //从w开始，输出结果大于w的最小值
+        if(states[n-1][j]){
+            break;
+        }
+    }
+    if(j == 3*w+1) return;//没有可行解
+    for(int i = n-1;i &gt;= 1;--i){
+        if(j-items[i] &gt;= 0 &amp;&amp; states[i-1][j-items[i]]){
+            System.out.println(items[i] + &quot; &quot;);
+            j = j-items[i];
+        }
+    }
+    if(j != 0){
+        System.out.println(items[0]);
+    }
+}
+</code></pre><p>状态 (i, j) 只有可能从 (i-1, j) 或者 (i-1, j-value[i]) 两个状态推导过来。所以，我们就检查这两个状态是否是可达的，也就是 states[i-1][j]或者 states[i-1][j-value[i]]是否是 true。</p>
+<p>如果 states[i-1][j]可达，就说明我们没有选择购买第 i 个商品，如果 states[i-1][j-value[i]]可达，那就说明我们选择了购买第 i 个商品。我们从中选择一个可达的状态（如果两个都可达，就随意选择一个），然后，继续迭代地考察其他商品是否有选择购买。</p>
+<h2 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h2><p>杨辉三角；<br>我们现在对它进行一些改造。每个位置的数字可以随意填写，经过某个数字只能到达下面一层相邻的两个数字。</p>
+<p>假设你站在第一层，往下移动，我们把移动到最底层所经过的所有数字之和，定义为路径的长度。请你编程求出从最高层移动到最底层的最短路径长度。</p>
+<p><img src="/2020/06/16/初识动态规划/杨辉三角.jpg" alt="杨辉三角"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="小六子的鱼 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="小六子的鱼 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/16/动态规划理论/" rel="next" title="动态规划中：理论">
+                <i class="fa fa-chevron-left"></i> 动态规划中：理论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/16/索引与数据库相关/" rel="prev" title="索引与数据库相关：B+树，索引，Redis实战相关总结">
+                索引与数据库相关：B+树，索引，Redis实战相关总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="小六子的鱼">
+            
+              <p class="site-author-name" itemprop="name">小六子的鱼</p>
+              <p class="site-description motion-element" itemprop="description">某211大学研究生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://xiaodupi-zyq.github.io/" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xiaoliuzizyq@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xiao-ya-ma-xiao-liu-zi/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://neowyj.github.io/" title="Neowyj" target="_blank">Neowyj</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.arflow.cn/t/4" title="ARFlow" target="_blank">ARFlow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://snailclimb.top/JavaGuide/#/?id=java" title="JavaGuide" target="_blank">JavaGuide</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初识动态规划：如何解决双十一购物时的凑单问题"><span class="nav-number">1.</span> <span class="nav-text">初识动态规划：如何解决双十一购物时的凑单问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划学习路线"><span class="nav-number">1.1.</span> <span class="nav-text">动态规划学习路线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1背包问题"><span class="nav-number">1.2.</span> <span class="nav-text">0-1背包问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1背包问题升级版"><span class="nav-number">1.3.</span> <span class="nav-text">0-1背包问题升级版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解答开篇"><span class="nav-number">1.4.</span> <span class="nav-text">解答开篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#课后思考"><span class="nav-number">1.5.</span> <span class="nav-text">课后思考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小六子的鱼</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xiaodupi-zyq',
+            repo: 'xiaodupi-zyq.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'e1a77ed9b132282a57f403268aaa78d5f51a9be0',
+            
+                client_id: 'b54fdaa7dadc52682b4b'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

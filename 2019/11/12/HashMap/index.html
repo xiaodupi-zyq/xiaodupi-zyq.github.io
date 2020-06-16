@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小六子的鱼的个人博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="简介：Java为了数据结构中的映射定义了一个接口，java.util.Map，此接口主要用四个实现，主要是HashMap，Hashtable，LinkedHashMap，TreeMap。具体的继承关系如下：具体四种实现类的特点如下：（1)HashMap:根据键的hashcode值存储数据，大多数情况下可以直接定位到它的值，访问速度很快，但是遍历顺序是不确定的。在键值对中只允许一条记录的键为null">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap自我详细理解">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/index.html">
+<meta property="og:site_name" content="小六子的鱼的个人博客">
+<meta property="og:description" content="简介：Java为了数据结构中的映射定义了一个接口，java.util.Map，此接口主要用四个实现，主要是HashMap，Hashtable，LinkedHashMap，TreeMap。具体的继承关系如下：具体四种实现类的特点如下：（1)HashMap:根据键的hashcode值存储数据，大多数情况下可以直接定位到它的值，访问速度很快，但是遍历顺序是不确定的。在键值对中只允许一条记录的键为null">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/继承关系.png">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/拉链法.png">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/拉链法红黑树.png">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/put流程图.png">
+<meta property="og:updated_time" content="2019-11-12T09:19:25.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HashMap自我详细理解">
+<meta name="twitter:description" content="简介：Java为了数据结构中的映射定义了一个接口，java.util.Map，此接口主要用四个实现，主要是HashMap，Hashtable，LinkedHashMap，TreeMap。具体的继承关系如下：具体四种实现类的特点如下：（1)HashMap:根据键的hashcode值存储数据，大多数情况下可以直接定位到它的值，访问速度很快，但是遍历顺序是不确定的。在键值对中只允许一条记录的键为null">
+<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/继承关系.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/">
+
+
+
+
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <title>HashMap自我详细理解 | 小六子的鱼的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/xiaodupi-zyq/xiaodupi-zyq.github.io"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png?resize=149%2C149" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小六子的鱼的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无穷的伟大,也是从“一”开始的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2019/11/12/HashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小六子的鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小六子的鱼的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HashMap自我详细理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-12T17:19:33+08:00">
+                2019-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/12/HashMap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/11/12/HashMap/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简介：<br>Java为了数据结构中的映射定义了一个接口，java.util.Map，此接口主要用四个实现，主要是HashMap，Hashtable，LinkedHashMap，TreeMap。具体的继承关系如下：<br><img src="/2019/11/12/HashMap/继承关系.png" alt="继承关系"><br>具体四种实现类的特点如下：<br>（1)HashMap:根据键的hashcode值存储数据，大多数情况下可以直接定位到它的值，访问速度很快，但是遍历顺序是不确定的。在键值对中只允许一条记录的键为null。且HashMap非线程安全，可以用ConcurrentHashMap具有线程安全的能力。</p>
+<hr>
+<h1 id="HashMap简介"><a href="#HashMap简介" class="headerlink" title="HashMap简介"></a>HashMap简介</h1><p>HashMap主要用来存放键值对，它基于哈希表的Map接口实现，是常用的Java集合之一。<br> JDK1.8 之前 HashMap 由 数组+链表 组成的，数组是 HashMap 的主体，链表则是主要为了解决哈希冲突而存在的（“拉链法”解决冲突）.<br> JDK1.8 之后解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为8）时，将链表转化为红黑树（将链表转换成红黑树前会判断，如果当前数组长度小于64，那么会选择进行数组扩容，而不是转换成红黑树），以减少搜索时间。</p>
+<h2 id="底层数据结构分析"><a href="#底层数据结构分析" class="headerlink" title="底层数据结构分析"></a>底层数据结构分析</h2><h3 id="JDK1-8之前"><a href="#JDK1-8之前" class="headerlink" title="JDK1.8之前"></a>JDK1.8之前</h3><p>JDK1.8之前HashMap底层是数组和链表结合在一起使用的链表散列。HashMap通过key的hashCode经过扰动函数处理之后得到hash值，然后通过（n-1） &amp; hash判断当前元素存放的位置（这里的n指的是数组的长度），如果当前位置村子元素的话，就判断该元素与要存入的元素的hash值以及key是否相同，如果相同的话，直接覆盖，不相同的话就通过拉链法解决冲突。<br>扰动函数就是hash方法，使用hash方法主要是防止性能较差的hashcode方法，从而减少碰撞。<br>1.8的hash方法</p>
+<pre><code>static final int hash(Object key) {
+    int h;
+    //key.hashCode() : 返回散列值也就是hashcod
+    //^ ： 按位异或
+    //&gt;&gt;&gt;：无符号右移，忽略符号位，空位都以0补齐
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
+}
+</code></pre><p>1.7的hash方法</p>
+<pre><code>static int hash(int h){
+    h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);
+    return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);
+}
+</code></pre><p>1.8的hash函数性能更高，因为1.7的hash函数扰动了四次</p>
+<p>拉链法： 数组与链表结合，如图<br><img src="/2019/11/12/HashMap/拉链法.png" alt="拉链法"><br>JDK1.8之后，当链表长度大于阈值（默认为8）时，将链表转化为红黑树，以减少搜索时间。<br><img src="/2019/11/12/HashMap/拉链法红黑树.png" alt="1.8的拉链法"></p>
+<h3 id="类的属性："><a href="#类的属性：" class="headerlink" title="类的属性："></a>类的属性：</h3><pre><code>public class HashMap&lt;K,V&gt; extends AbstractMAp&lt;K,V&gt; implements Map&lt;K,V&gt;,Cloneable,Serializable{
+    // 序列号
+    private static final long serialVersionUID = 362498820763181265L;    
+    // 默认的初始容量是16
+    static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4;   
+    // 最大容量
+    static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30; 
+    // 默认的填充因子
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    // 当桶(bucket)上的结点数大于这个值时会转成红黑树
+    static final int TREEIFY_THRESHOLD = 8; 
+    // 当桶(bucket)上的结点数小于这个值时树转链表
+    static final int UNTREEIFY_THRESHOLD = 6;
+    // 桶中结构转化为红黑树对应的table的最小大小
+    static final int MIN_TREEIFY_CAPACITY = 64;
+    // 存储元素的数组，总是2的幂次倍
+    transient Node&lt;k,v&gt;[] table; 
+    // 存放具体元素的集
+    transient Set&lt;map.entry&lt;k,v&gt;&gt; entrySet;
+    // 存放元素的个数，注意这个不等于数组的长度。
+    transient int size;
+    // 每次扩容和更改map结构的计数器
+    transient int modCount;   
+    // 临界值 当实际大小(容量*填充因子)超过临界值时，会进行扩容
+    int threshold;
+    // 加载因子
+    final float loadFactor;
+}
+</code></pre><p>loadFactory加载因子：加载因子控制数据的疏密程度，默认0.75比较好的临界值。<br>给定的默认容量为 16，负载因子为 0.75。Map 在使用过程中不断的往里面存放数据，当数量达到了 16 * 0.75 = 12 就需要将当前 16 的容量进行扩容，而扩容这个过程涉及到 rehash、复制数据等操作，所以非常消耗性能</p>
+<p>threshold<br>threshold = capacity*loadFactor,当Size&gt;=threshold的时候，考虑扩增</p>
+<h3 id="节点类源码"><a href="#节点类源码" class="headerlink" title="节点类源码"></a>节点类源码</h3><pre><code>//继承自Map.Entry&lt;K,V&gt; 
+static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+    final int hash;// 哈希值，存放元素到hashmap中时用来与其他元素hash值比较
+    final K key;//键
+    V value; //值
+    //指向下一个节点
+    Node&lt;K,V&gt; next;
+    Node(int hash, K key,V value,Node&lt;K,V&gt; next) {
+        this.hash = hash;
+        this.key = key;
+        this.value = value;
+        this.next = next;
+    }
+    public final K getKey() {return key;}
+    public final V getValue() {return value;}
+    public final String toString() {return key + &quot;=&quot; + value;}
+    //重写hashCode方法
+    public final int hashCode(){
+        return Objects.hashCode(Key) ^ Objects.hashCode(value);
+    }
+
+    public final V setValue(V newValue) {
+        V oldValue = value;
+        value = newValue;
+        return oldValue;
+    }
+    //重写equals方法
+    public final boolean equals(Object o) {
+        if(o == this){
+            return true;
+        }
+        if(o instanceof Map.Entry){
+            Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;) o;
+            //任何属于Map.Entry的对象都可以进行比较，比较过程中，key要相等，value也要相等
+            if(Objects.equals(key,e.getKey()) &amp;&amp; Objects.equals(value,e.getValue())){
+                return true;
+            }
+        }
+    }
+}
+</code></pre><h3 id="树节点类源码"><a href="#树节点类源码" class="headerlink" title="树节点类源码"></a>树节点类源码</h3><pre><code>static final class TreeNode&lt;K,V&gt; extends LinkedHashMap.Entry&lt;K,V&gt; {
+    TreeNode&lt;K,V&gt; parent; //父
+    TreeNode&lt;K,V&gt; left; //左
+    TreeNode&lt;K,V&gt; right; //右
+    TreeNode&lt;K,V&gt; prev; //needed to unlink next upon deletion
+    boolean red; //判断颜色
+    TreeNode(int hash,K key,V val,Node&lt;K,V&gt; next) {
+        super(hash,key,val,next);
+    }
+    //返回根节点
+    final TreeNode&lt;K,V&gt; root() {
+        final (TreeNode&lt;K,V&gt; r = this,p;;) {
+            if((p = r.parent) == null) {
+                return r;
+            }
+            r = p;
+        }
+    }
+}
+</code></pre><h2 id="HashMap源码分析"><a href="#HashMap源码分析" class="headerlink" title="HashMap源码分析"></a>HashMap源码分析</h2><h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><pre><code>//默认构造函数
+public HashMap() {
+    this.loadFactor = DEFAULT_LOAD_FACTOR; //all other fields defaulted
+}
+
+//包含另一个“Map”的构造函数
+public HashMap(Map&lt;? extends K,? extends V&gt; m) {
+    this.loadFactor = DEFAULT_LOAD_FACTOR;
+    putMapEntries(m,false);//下面分析
+}
+
+//指定“容量大小”的构造函数
+public HashMap(int initialCapacity) {
+    this(initialCapacity,DEFAULT_LOAD_FACTOR);
+}
+
+//指定容量大小和加载因子的构造函数
+public HashMap(int initialCapacity, final loadFactor) {
+    //初始容量小于零和大于最大的情况
+    if(initialCapacity &lt; 0){
+        throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; + initialCapacity);
+    }
+    if(initialCapacity &gt; MAXIMUM_CAPACITY){
+        initialCapacity = MAXIMUM_CAPACITY;
+    }
+    //加载因子的限制条件
+    if(loadFactor &lt;= 0 || Float.isNaN(loadFactor)){
+        throw new IllegalArgumentException(&quot;Illegal load factor: &quot; + loadFactor);
+    }
+    this.loadFactor = loadFactor;
+    this.threshold = tableSizeFor(inintialCapacity); 
+}
+</code></pre><p>putMapEntries方法：</p>
+<pre><code>//就是将已有构造函数的m放进新的hashMap
+final void putMapEntries(Map&lt;? extends K,? extends V&gt; m , boolean evict) {
+    int s = m.size();
+    if(s &gt; 0) {
+        //判断table是否初始化
+        if(table == null) {
+            //未初始化，s为m的实际个数
+            float ft = ((float)s / loadFactor) + 1.0F;
+            int t = ((ft &lt; (float)MAXIMUM_CAPACITY) ? (int) ft : MAXIMUM_CAPACITY);
+            //计算得到的t大于阈值，则初始化阈值
+            if(t &gt; threshold){
+                threshold = tableSizeFor(t);
+            }
+            //已初始化，并且m元素个数大于阈值，进行扩容处理
+            else if (s &gt; threshold){
+                resize();
+            }
+            //将m中所有的元素添加到HashMap中
+            for(Map.Entry&lt;? extends K,? extends V&gt; e : m.EntrySet()) {
+                K key = e.getKey();
+                V value = e.getValue();
+                putVal(hash(key),key,value,false,evict)
+            }
+        }
+    }
+}
+</code></pre><h3 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h3><p>HashMap只提供了put用于添加元素，putVal方法只是给put方法调用的一个方法，并没有提供给用户使用。</p>
+<h4 id="对putVal方法添加元素的分析如下："><a href="#对putVal方法添加元素的分析如下：" class="headerlink" title="对putVal方法添加元素的分析如下："></a>对putVal方法添加元素的分析如下：</h4><p>1、如果定位到的数组位置没有元素就直接插入<br>2、如果定位到的数组位置有元素就和要插入的key比较，如果key相同就直接覆盖，如果key不相同，就判断是否是一个树节点，如果是就调用e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this,tab,hash,key,value)将元素添加进入，如果不是就遍历链表插入（插入的是链表尾部）</p>
+<p><img src="/2019/11/12/HashMap/put流程图.png" alt="put流程图"></p>
+<pre><code>//put源码
+public V put(K key , V value){
+    return putVal(hash(key),key,value,false,true);
+}
+
+final V putVal(int hash,K key, V value,boolean onlyIfAbsent,boolean evict) {
+    Node&lt;K,V&gt;[] tab;
+    Node&lt;K,V&gt; p; 
+    int n,i;
+    //table未初始化或者长度为0，进行扩容
+    if((tab = table) == null || (n = tab.length) == 0){
+        n = (tab = resize()).length; 
+    }
+    //(n - 1) &amp; hash确定元素存放在哪个桶内，桶为空，新生成的节点放入桶内，此时的节点是放在数组内的
+    if((p = tab[i = (n - 1) &amp; hash]) == null){
+        tab[i] = newNode(hash, key, value, null);
+    }
+    //桶内已有存在的元素
+    else{
+        Node&lt;K,V&gt; e; K k;
+        //比较桶中第一个元素（数组中的节点）的hash值是否相等，key相等
+        if(p.hash == hash &amp;&amp; ((k = p.key) == key || (key != null &amp;&amp; key.equals(k)))){
+            //将第一个元素赋给e，用e来记录
+            e = p;
+        }
+        //hash值不相等，即key不相等，为红黑树节点
+        else if(p instanceof TreeNode) {
+            //放入树中
+            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
+        }
+        //为链表节点
+        else {
+            //在链表最末插入结点
+            for((e = p.next()) == null) {
+                //在尾部插入新节点
+                p.next = newNode(hash,key,value,null);
+                // 结点数量达到阈值，转化为红黑树
+                if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                    treeifyBin(tab, hash);
+                // 跳出循环
+                break;
+            }
+            // 判断链表中结点的key值与插入的元素的key值是否相等
+            if (e.hash == hash &amp;&amp;
+                ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                // 相等，跳出循环
+                break;
+            // 用于遍历桶中的链表，与前面的e = p.next组合，可以遍历链表
+            p = e;
+        }
+    }
+
+    // 表示在桶中找到key值、hash值与插入元素相等的结点
+    if (e != null) { 
+        // 记录e的value
+        V oldValue = e.value;
+        // onlyIfAbsent为false或者旧值为null
+        if (!onlyIfAbsent || oldValue == null)
+            //用新值替换旧值
+            e.value = value;
+        // 访问后回调
+        afterNodeAccess(e);
+        // 返回旧值
+        return oldValue;
+    }
+}
+// 结构性修改
+++modCount;
+// 实际大小大于阈值则扩容
+if (++size &gt; threshold)
+    resize();
+// 插入后回调
+afterNodeInsertion(evict);
+return null;
+}
+</code></pre><h3 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h3><pre><code>public V get(Object key) {
+    Node&lt;K,V&gt; e;
+    return (e = getNode(hash(key), key)) == null ? null : e.value;
+}
+final Node&lt;K,V&gt; getNode(int hash, Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp; (first = tab[(n - 1) &amp; hash]) != null) {
+        // 数组元素相等
+        if (first.hash == hash &amp;&amp; // always check first node
+            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))
+            return first;
+        // 桶中不止一个节点
+        if ((e = first.next) != null) {
+            // 在树中get
+            if (first instanceof TreeNode)
+                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);
+            // 在链表中get
+            do {
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    return e;
+            } while ((e = e.next) != null);
+        }
+    }
+    return null;
+}
+</code></pre><h3 id="resize方法"><a href="#resize方法" class="headerlink" title="resize方法"></a>resize方法</h3><p>进行扩容，会伴随着一次重新hash分配，并且会遍历hash表中所有的元素，是非常耗时的。在编写程序中，要尽量避免resize。</p>
+<pre><code>final Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table; //旧数组
+    int oldCap = (oldTab == null) ? 0 : oldTab.length; //旧数组的大小
+    int oldThr = threshold; //旧数组的阈值
+    int newCap, newThr = 0; //初始化新数组的容量和阈值为0
+    if (oldCap &gt; 0) {
+        // 超过最大值就不再扩充了，就只好随你碰撞去吧
+        if (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE; //将阈值也调整到最大，任由碰撞吧
+            return oldTab;
+        }
+        // 没超过最大值，就扩充为原来的2倍
+        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp; oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr &lt;&lt; 1; // 阈值也调整为两倍
+    }
+    else if (oldThr &gt; 0) // initial capacity was placed in threshold
+        newCap = oldThr;
+    else { 
+        // signifies using defaults
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    // 计算新的resize上限
+    if (newThr == 0) {
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ? (int)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+    table = newTab;
+    if (oldTab != null) {
+        // 把每个bucket都移动到新的buckets中
+        for (int j = 0; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                if (e.next == null)
+                    newTab[e.hash &amp; (newCap - 1)] = e;
+                else if (e instanceof TreeNode)
+                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                else { 
+                    Node&lt;K,V&gt; loHead = null, loTail = null;
+                    Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                    Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                        // 原索引
+                        if ((e.hash &amp; oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        // 原索引+oldCap
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    // 原索引放到bucket里
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    // 原索引+oldCap放到bucket里
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+</code></pre><p><strong><strong><strong><strong>***</strong></strong></strong></strong>未完待续</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="小六子的鱼 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="小六子的鱼 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/12/LinkedList/" rel="next" title="LinkedList">
+                <i class="fa fa-chevron-left"></i> LinkedList
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/16/链表/" rel="prev" title="链表">
+                链表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="小六子的鱼">
+            
+              <p class="site-author-name" itemprop="name">小六子的鱼</p>
+              <p class="site-description motion-element" itemprop="description">某211大学研究生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://xiaodupi-zyq.github.io/" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xiaoliuzizyq@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xiao-ya-ma-xiao-liu-zi/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://neowyj.github.io/" title="Neowyj" target="_blank">Neowyj</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.arflow.cn/t/4" title="ARFlow" target="_blank">ARFlow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://snailclimb.top/JavaGuide/#/?id=java" title="JavaGuide" target="_blank">JavaGuide</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap简介"><span class="nav-number">1.</span> <span class="nav-text">HashMap简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#底层数据结构分析"><span class="nav-number">1.1.</span> <span class="nav-text">底层数据结构分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK1-8之前"><span class="nav-number">1.1.1.</span> <span class="nav-text">JDK1.8之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的属性："><span class="nav-number">1.1.2.</span> <span class="nav-text">类的属性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点类源码"><span class="nav-number">1.1.3.</span> <span class="nav-text">节点类源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树节点类源码"><span class="nav-number">1.1.4.</span> <span class="nav-text">树节点类源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap源码分析"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法"><span class="nav-number">1.2.1.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#put方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">put方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对putVal方法添加元素的分析如下："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">对putVal方法添加元素的分析如下：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get方法"><span class="nav-number">1.2.3.</span> <span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resize方法"><span class="nav-number">1.2.4.</span> <span class="nav-text">resize方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小六子的鱼</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xiaodupi-zyq',
+            repo: 'xiaodupi-zyq.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'e1a77ed9b132282a57f403268aaa78d5f51a9be0',
+            
+                client_id: 'b54fdaa7dadc52682b4b'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

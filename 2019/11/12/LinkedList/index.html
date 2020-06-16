@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小六子的鱼的个人博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="LinkedListLinkedList实现了List接口和Deque接口的双端链表。链表结构支持高效的插入和删除操作，Deque接口使得LinkedList类具有队列的特性。  LinkedList类中的内部私有类Nodeprivate static class Node&amp;lt;E&amp;gt; {     E item; //结点值     Node&amp;lt;E&amp;gt; next; //后继节点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LinkedList">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/index.html">
+<meta property="og:site_name" content="小六子的鱼的个人博客">
+<meta property="og:description" content="LinkedListLinkedList实现了List接口和Deque接口的双端链表。链表结构支持高效的插入和删除操作，Deque接口使得LinkedList类具有队列的特性。  LinkedList类中的内部私有类Nodeprivate static class Node&amp;lt;E&amp;gt; {     E item; //结点值     Node&amp;lt;E&amp;gt; next; //后继节点">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/内部结构.png">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/节点.png">
+<meta property="og:updated_time" content="2019-11-12T05:58:34.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LinkedList">
+<meta name="twitter:description" content="LinkedListLinkedList实现了List接口和Deque接口的双端链表。链表结构支持高效的插入和删除操作，Deque接口使得LinkedList类具有队列的特性。  LinkedList类中的内部私有类Nodeprivate static class Node&amp;lt;E&amp;gt; {     E item; //结点值     Node&amp;lt;E&amp;gt; next; //后继节点">
+<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/内部结构.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/">
+
+
+
+
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <title>LinkedList | 小六子的鱼的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/xiaodupi-zyq/xiaodupi-zyq.github.io"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png?resize=149%2C149" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小六子的鱼的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无穷的伟大,也是从“一”开始的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2019/11/12/LinkedList/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小六子的鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小六子的鱼的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LinkedList</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-12T13:56:33+08:00">
+                2019-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/12/LinkedList/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/11/12/LinkedList/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h1><p>LinkedList实现了List接口和Deque接口的双端链表。<br>链表结构支持高效的插入和删除操作，<br>Deque接口使得LinkedList类具有队列的特性。</p>
+<p><img src="/2019/11/12/LinkedList/内部结构.png" alt="内部结构"><br><img src="/2019/11/12/LinkedList/节点.png" alt="节点"></p>
+<h2 id="LinkedList类中的内部私有类Node"><a href="#LinkedList类中的内部私有类Node" class="headerlink" title="LinkedList类中的内部私有类Node"></a>LinkedList类中的内部私有类Node</h2><pre><code>private static class Node&lt;E&gt; {
+    E item; //结点值
+    Node&lt;E&gt; next; //后继节点
+    Node&lt;E&gt; prev; //前驱节点
+    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next){
+        this.item = element;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+</code></pre><h2 id="LinkedList源码分析："><a href="#LinkedList源码分析：" class="headerlink" title="LinkedList源码分析："></a>LinkedList源码分析：</h2><h3 id="构造方法："><a href="#构造方法：" class="headerlink" title="构造方法："></a>构造方法：</h3><pre><code>public LinkedList(){
+}
+
+public LinkedList(Collection&lt;? extends E&gt; c) {
+    this();
+    addAll(c);
+}
+</code></pre><h3 id="add方法"><a href="#add方法" class="headerlink" title="add方法"></a>add方法</h3><p>add(E e)方法：将元素添加到链表的尾部</p>
+<pre><code>public boolean add(E e){
+    linkLast(e);//调用方法
+    return true;
+}
+
+/**
+  *链接使e作为最后一个元素
+  */
+void linkLast(E e){
+    final Node&lt;E&gt; l = last; //l指向链表尾部
+    final Node&lt;E&gt; newNode = new Node&lt;&gt;(l,e,null); //新建结点将结点放在链表尾部
+    last = newNode;//新建结点
+    if(l == null){ //说明原链表为空，新建结点既是第一个也是最后一个
+        first = newNode;
+    }else{
+        l.next = newNode;//指向下一个元素
+    }
+    size++;
+    modCount++;
+}
+</code></pre><p>add(int index,E e) 在指定位置添加元素</p>
+<pre><code>public void add(int index, E element) {
+    checkPositionIndex(index);//检查索引是否处于【0~size】之间
+    if(index == size) {
+        linkLast(element);
+    }else{
+        linkBefore(element,node(index));
+    }
+}
+</code></pre><p>linkBefore方法需要给定两个参数，一个插入结点的值，一个指定的node，所以我们调用了node(index)查找index对应的node<br>addAll(Collection c) : 将集合插入到链表尾部</p>
+<pre><code>public boolean addAll(Collection&lt;? extends E&gt; c) {
+    return addAll(size,c)
+}
+</code></pre><p>addAll(int index, Collection c)： 将集合从指定位置开始插入</p>
+<pre><code>public boolean addAll(int index, Collection&lt;? extends E&gt; c) {
+    //1:检查index范围是否在size之内
+    checkPositionIndex(index);
+
+    //2:toArray()方法把集合的数据存到对象数组中
+    Object[] a = c.toArray();
+    int numNew = a.length;
+    if (numNew == 0)
+        return false;
+
+    //3：得到插入位置的前驱节点和后继节点
+    Node&lt;E&gt; pred, succ;
+    //如果插入位置为尾部，前驱节点为last，后继节点为null
+    if (index == size) {
+        succ = null;
+        pred = last;
+    }
+    //否则，调用node()方法得到后继节点，再得到前驱节点
+    else {
+        succ = node(index);
+        pred = succ.prev;
+    }
+
+    // 4：遍历数据将数据插入
+    for (Object o : a) {
+        @SuppressWarnings(&quot;unchecked&quot;) E e = (E) o;
+        //创建新节点
+        Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, null);
+        //如果插入位置在链表头部
+        if (pred == null)
+            first = newNode;
+        else
+            pred.next = newNode;
+        pred = newNode;
+    }
+
+    //如果插入位置在尾部，重置last节点
+    if (succ == null) {
+        last = pred;
+    }
+    //否则，将插入的链表与先前链表连接起来
+    else {
+        pred.next = succ;
+        succ.prev = pred;
+    }
+
+    size += numNew;
+    modCount++;
+    return true;
+}
+</code></pre><h3 id="addAll方法通常包括四个步骤："><a href="#addAll方法通常包括四个步骤：" class="headerlink" title="addAll方法通常包括四个步骤："></a>addAll方法通常包括四个步骤：</h3><pre><code>1、检查index范围是否在size之内
+2、toArray()方法把集合中的数据存到对象数组中
+3、得到插入位置的前驱和后继节点
+4、遍历数据将数据插入到指定位置
+</code></pre><p>addFirst(E e):将元素添加到链表头部</p>
+<pre><code>public void addFirst(E e) {
+    linkFirst(e);
+}
+
+private void linkFirst(E e) {
+    final Node&lt;E&gt; f = first;
+    final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);//新建节点，以头节点为后继节点
+    first = newNode;
+    //如果链表为空，last节点也指向该节点
+    if (f == null)
+        last = newNode;
+    //否则，将头节点的前驱指针指向新节点，也就是指向前一个元素
+    else
+        f.prev = newNode;
+    size++;
+    modCount++;
+}
+</code></pre><h3 id="根据位置取数据的方法"><a href="#根据位置取数据的方法" class="headerlink" title="根据位置取数据的方法"></a>根据位置取数据的方法</h3><p>get(int index) : 根据指定索引返回数据</p>
+<pre><code>public E get(int index) {
+    //检查index范围是否在size之内
+    checkElementIndex(index);
+    //调用Node(index)去找到index对应的node然后返回它的值
+    return node(index).item;
+}
+</code></pre><h3 id="获取头节点的数据方法："><a href="#获取头节点的数据方法：" class="headerlink" title="获取头节点的数据方法："></a>获取头节点的数据方法：</h3><pre><code>public E getFirst() {
+    final Node&lt;E&gt; f = first;
+    if (f == null)
+        throw new NoSuchElementException();
+    return f.item;
+}
+public E element() {
+    return getFirst();
+}
+public E peek() {
+    final Node&lt;E&gt; f = first;
+    return (f == null) ? null : f.item; //跟getFirst唯一的区别在于头为空不报错
+}
+public E peekFirst() {
+    final Node&lt;E&gt; f = first;
+    return (f == null) ? null : f.item;
+}
+</code></pre><h3 id="区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常"><a href="#区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常" class="headerlink" title="区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常"></a>区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常</h3><p>获取尾节点（index = -1）数据方法：</p>
+<pre><code>public E getLast() {
+    final Node&lt;E&gt; l = last;
+    if (l == null)
+        throw new NoSuchElementException();
+    return l.item;
+}
+public E peekLast() {
+    final Node&lt;E&gt; l = last;
+    return (l == null) ? null : l.item;
+}
+</code></pre><p>根据对象得到索引的方法<br>int indexOf(Object o) : 从头遍历找</p>
+<pre><code>public int indexOf(Object o) {
+    int index = 0;
+    if(o == null) {
+        for(Node&lt;E&gt; x = first; x != null; x = x.next) {
+            if(x.item == null) {
+                return index;
+            }
+            index++;
+        }
+    } else {
+        for(Node&lt;E&gt; x = first; x != null; x = x.next) {
+            if(o.equals(x.item)){
+                return index;
+            }
+            index++;
+        }
+    }
+    return -1;
+}
+</code></pre><h3 id="检查链表是否包含对象的方法："><a href="#检查链表是否包含对象的方法：" class="headerlink" title="检查链表是否包含对象的方法："></a>检查链表是否包含对象的方法：</h3><p>contains(Object o) : 检查对象o是否存在于链表中</p>
+<pre><code>public boolean contains(Object o) {
+    return indexOf(o) != -1;
+}
+</code></pre><h3 id="删除方法"><a href="#删除方法" class="headerlink" title="删除方法"></a>删除方法</h3><p>remove(),removeFirst,pop() : 删除头节点<br>    public E pop() {<br>        return removeFirst();<br>    }<br>    public E remove() {<br>        return removeFirst();<br>    }<br>    public E removeFirst() {<br>        final Node<e> f = first;<br>        if (f == null)<br>            throw new NoSuchElementException();<br>        return unlinkFirst(f);<br>    }</e></p>
+<p>removeLast(), pollLast(): 删除尾节点</p>
+<pre><code>public E removeLast() {
+    final Node&lt;E&gt; l = last;
+    if (l == null)
+        throw new NoSuchElementException();
+    return unlinkLast(l);
+}
+public E pollLast() {
+    final Node&lt;E&gt; l = last;
+    return (l == null) ? null : unlinkLast(l);
+}
+</code></pre><p>remove(Object o) : 删除指定元素</p>
+<pre><code>public boolean remove(Object o) {
+    //如果删除对象为null
+    if (o == null) {
+        //从头开始遍历
+        for (Node&lt;E&gt; x = first; x != null; x = x.next) {
+            //找到元素
+            if (x.item == null) {
+               //从链表中移除找到的元素
+                unlink(x);
+                return true;
+            }
+        }
+    } else {
+        //从头开始遍历
+        for (Node&lt;E&gt; x = first; x != null; x = x.next) {
+            //找到元素
+            if (o.equals(x.item)) {
+                //从链表中移除找到的元素
+                unlink(x);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+</code></pre><p>当删除指定对象时，只需调用remove(Object o)即可，不过该方法一次只会删除一个匹配的对象，如果删除了匹配对象，返回true，否则false。</p>
+<p>unlink(Node x)方法：</p>
+<pre><code>E unlink(Node&lt;E&gt; x) {
+    // assert x != null;
+    final E element = x.item;
+    final Node&lt;E&gt; next = x.next;//得到后继节点
+    final Node&lt;E&gt; prev = x.prev;//得到前驱节点
+
+    //删除前驱指针
+    if (prev == null) {
+        first = next;//如果删除的节点是头节点,令头节点指向该节点的后继节点
+    } else {
+        prev.next = next;//将前驱节点的后继节点指向后继节点
+        x.prev = null;
+    }
+
+    //删除后继指针
+    if (next == null) {
+        last = prev;//如果删除的节点是尾节点,令尾节点指向该节点的前驱节点
+    } else {
+        next.prev = prev;
+        x.next = null;
+    }
+
+    x.item = null;
+    size--;
+    modCount++;
+    return element;
+}
+</code></pre><p>remove(int index)：删除指定位置的元素</p>
+<pre><code>public E remove(int index) {
+    //检查index范围
+    checkElementIndex(index);
+    //将节点删除
+    return unlink(node(index));
+}
+</code></pre><h3 id="LinkList类常用方法测试"><a href="#LinkList类常用方法测试" class="headerlink" title="LinkList类常用方法测试"></a>LinkList类常用方法测试</h3><pre><code>package list;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class LinkedListDemo {
+    public static void main(String[] srgs) {
+        //创建存放int类型的linkedList
+        LinkedList&lt;Integer&gt; linkedList = new LinkedList&lt;&gt;();
+        /************************** linkedList的基本操作 ************************/
+        linkedList.addFirst(0); // 添加元素到列表开头
+        linkedList.add(1); // 在列表结尾添加元素
+        linkedList.add(2, 2); // 在指定位置添加元素
+        linkedList.addLast(3); // 添加元素到列表结尾
+
+        System.out.println(&quot;LinkedList（直接输出的）: &quot; + linkedList);
+
+        System.out.println(&quot;getFirst()获得第一个元素: &quot; + linkedList.getFirst()); // 返回此列表的第一个元素
+        System.out.println(&quot;getLast()获得第最后一个元素: &quot; + linkedList.getLast()); // 返回此列表的最后一个元素
+        System.out.println(&quot;removeFirst()删除第一个元素并返回: &quot; + linkedList.removeFirst()); // 移除并返回此列表的第一个元素
+        System.out.println(&quot;removeLast()删除最后一个元素并返回: &quot; + linkedList.removeLast()); // 移除并返回此列表的最后一个元素
+        System.out.println(&quot;After remove:&quot; + linkedList);
+        System.out.println(&quot;contains()方法判断列表是否包含1这个元素:&quot; + linkedList.contains(1)); // 判断此列表包含指定元素，如果是，则返回true
+        System.out.println(&quot;该linkedList的大小 : &quot; + linkedList.size()); // 返回此列表的元素个数
+
+        /************************** 位置访问操作 ************************/
+        System.out.println(&quot;-----------------------------------------&quot;);
+        linkedList.set(1, 3); // 将此列表中指定位置的元素替换为指定的元素
+        System.out.println(&quot;After set(1, 3):&quot; + linkedList);
+        System.out.println(&quot;get(1)获得指定位置（这里为1）的元素: &quot; + linkedList.get(1)); // 返回此列表中指定位置处的元素
+
+        /************************** Search操作 ************************/
+        System.out.println(&quot;-----------------------------------------&quot;);
+        linkedList.add(3);
+        System.out.println(&quot;indexOf(3): &quot; + linkedList.indexOf(3)); // 返回此列表中首次出现的指定元素的索引
+        System.out.println(&quot;lastIndexOf(3): &quot; + linkedList.lastIndexOf(3));// 返回此列表中最后出现的指定元素的索引
+
+        /************************** Queue操作 ************************/
+        System.out.println(&quot;-----------------------------------------&quot;);
+        System.out.println(&quot;peek(): &quot; + linkedList.peek()); // 获取但不移除此列表的头
+        System.out.println(&quot;element(): &quot; + linkedList.element()); // 获取但不移除此列表的头
+        linkedList.poll(); // 获取并移除此列表的头
+        System.out.println(&quot;After poll():&quot; + linkedList);
+        linkedList.remove();
+        System.out.println(&quot;After remove():&quot; + linkedList); // 获取并移除此列表的头
+        linkedList.offer(4);
+        System.out.println(&quot;After offer(4):&quot; + linkedList); // 将指定元素添加到此列表的末尾
+
+        /************************** Deque操作 ************************/
+        System.out.println(&quot;-----------------------------------------&quot;);
+        linkedList.offerFirst(2); // 在此列表的开头插入指定的元素
+        System.out.println(&quot;After offerFirst(2):&quot; + linkedList);
+        linkedList.offerLast(5); // 在此列表末尾插入指定的元素
+        System.out.println(&quot;After offerLast(5):&quot; + linkedList);
+        System.out.println(&quot;peekFirst(): &quot; + linkedList.peekFirst()); // 获取但不移除此列表的第一个元素
+        System.out.println(&quot;peekLast(): &quot; + linkedList.peekLast()); // 获取但不移除此列表的第一个元素
+        linkedList.pollFirst(); // 获取并移除此列表的第一个元素
+        System.out.println(&quot;After pollFirst():&quot; + linkedList);
+        linkedList.pollLast(); // 获取并移除此列表的最后一个元素
+        System.out.println(&quot;After pollLast():&quot; + linkedList);
+        linkedList.push(2); // 将元素推入此列表所表示的堆栈（插入到列表的头）
+        System.out.println(&quot;After push(2):&quot; + linkedList);
+        linkedList.pop(); // 从此列表所表示的堆栈处弹出一个元素（获取并移除列表第一个元素）
+        System.out.println(&quot;After pop():&quot; + linkedList);
+        linkedList.add(3);
+        linkedList.removeFirstOccurrence(3); // 从此列表中移除第一次出现的指定元素（从头部到尾部遍历列表）
+        System.out.println(&quot;After removeFirstOccurrence(3):&quot; + linkedList);
+        linkedList.removeLastOccurrence(3); // 从此列表中移除最后一次出现的指定元素（从尾部到头部遍历列表）
+        System.out.println(&quot;After removeFirstOccurrence(3):&quot; + linkedList);
+
+        /************************** 遍历操作 ************************/
+        System.out.println(&quot;-----------------------------------------&quot;);
+        linkedList.clear();
+        for (int i = 0; i &lt; 100000; i++) {
+            linkedList.add(i);
+        }
+        // 迭代器遍历
+        long start = System.currentTimeMillis();
+        Iterator&lt;Integer&gt; iterator = linkedList.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;Iterator：&quot; + (end - start) + &quot; ms&quot;);
+
+        // 顺序遍历(随机遍历)
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; linkedList.size(); i++) {
+            linkedList.get(i);
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;for：&quot; + (end - start) + &quot; ms&quot;);
+
+        // 另一种for循环遍历
+        start = System.currentTimeMillis();
+        for (Integer i : linkedList)
+            ;
+        end = System.currentTimeMillis();
+        System.out.println(&quot;for2：&quot; + (end - start) + &quot; ms&quot;);
+
+        // 通过pollFirst()或pollLast()来遍历LinkedList
+        LinkedList&lt;Integer&gt; temp1 = new LinkedList&lt;&gt;();
+        temp1.addAll(linkedList);
+        start = System.currentTimeMillis();
+        while (temp1.size() != 0) {
+            temp1.pollFirst();
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;pollFirst()或pollLast()：&quot; + (end - start) + &quot; ms&quot;);
+
+        // 通过removeFirst()或removeLast()来遍历LinkedList
+        LinkedList&lt;Integer&gt; temp2 = new LinkedList&lt;&gt;();
+        temp2.addAll(linkedList);
+        start = System.currentTimeMillis();
+        while (temp2.size() != 0) {
+            temp2.removeFirst();
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;removeFirst()或removeLast()：&quot; + (end - start) + &quot; ms&quot;);
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="小六子的鱼 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="小六子的鱼 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/19/django数据库空值（admin字段空值保存）/" rel="next" title="django数据库空值（admin字段空值保存）">
+                <i class="fa fa-chevron-left"></i> django数据库空值（admin字段空值保存）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/12/HashMap/" rel="prev" title="HashMap自我详细理解">
+                HashMap自我详细理解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="小六子的鱼">
+            
+              <p class="site-author-name" itemprop="name">小六子的鱼</p>
+              <p class="site-description motion-element" itemprop="description">某211大学研究生</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://xiaodupi-zyq.github.io/" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xiaoliuzizyq@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xiao-ya-ma-xiao-liu-zi/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://neowyj.github.io/" title="Neowyj" target="_blank">Neowyj</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.arflow.cn/t/4" title="ARFlow" target="_blank">ARFlow</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://snailclimb.top/JavaGuide/#/?id=java" title="JavaGuide" target="_blank">JavaGuide</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LinkedList"><span class="nav-number">1.</span> <span class="nav-text">LinkedList</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LinkedList类中的内部私有类Node"><span class="nav-number">1.1.</span> <span class="nav-text">LinkedList类中的内部私有类Node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LinkedList源码分析："><span class="nav-number">1.2.</span> <span class="nav-text">LinkedList源码分析：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法："><span class="nav-number">1.2.1.</span> <span class="nav-text">构造方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">add方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#addAll方法通常包括四个步骤："><span class="nav-number">1.2.3.</span> <span class="nav-text">addAll方法通常包括四个步骤：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据位置取数据的方法"><span class="nav-number">1.2.4.</span> <span class="nav-text">根据位置取数据的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取头节点的数据方法："><span class="nav-number">1.2.5.</span> <span class="nav-text">获取头节点的数据方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常"><span class="nav-number">1.2.6.</span> <span class="nav-text">区别在于四种方法对于头结点为空的时候的处理，是报错还是抛出异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查链表是否包含对象的方法："><span class="nav-number">1.2.7.</span> <span class="nav-text">检查链表是否包含对象的方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除方法"><span class="nav-number">1.2.8.</span> <span class="nav-text">删除方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkList类常用方法测试"><span class="nav-number">1.2.9.</span> <span class="nav-text">LinkList类常用方法测试</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小六子的鱼</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xiaodupi-zyq',
+            repo: 'xiaodupi-zyq.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'e1a77ed9b132282a57f403268aaa78d5f51a9be0',
+            
+                client_id: 'b54fdaa7dadc52682b4b'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>
