@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想在前面的章节中，图的深度优先搜索算法利用的就是回溯算法想，这个算法思想非常简单，但是应用很广泛，但是很多软件开发场景中都使用到了，比如正则表达式算法、编译原理中的语法分析等； 除此之外还有数独，八皇后，0-1背包问题，图的着色旅行商问题，全排列问题等等； 如何理解“回溯算法”笼统的讲，回溯算法很多时候都应用在搜索这类问题上，不过这里说的搜索并不是狭义">
+<meta name="description" content="状态转移图：  /** * @Author: zyq-xiaoliuzi * @Description: * @Date: Created in 21:16 2020/8/11 * @Modified By: */  /** * 首先定义状态: *      dp[i][k][0] =&amp;gt; 第i天在交易第k次时没有持有股票 *      dp[i][k][1] =&amp;gt; 第i天在交易第k次时">
 <meta property="og:type" content="article">
-<meta property="og:title" content="回溯算法">
-<meta property="og:url" content="https://xiaodupi-zyq.github.io/2020/06/16/回溯算法/index.html">
+<meta property="og:title" content="股票问题">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2020/08/12/股票问题/index.html">
 <meta property="og:site_name" content="小六子的鱼的个人博客">
-<meta property="og:description" content="回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想在前面的章节中，图的深度优先搜索算法利用的就是回溯算法想，这个算法思想非常简单，但是应用很广泛，但是很多软件开发场景中都使用到了，比如正则表达式算法、编译原理中的语法分析等； 除此之外还有数独，八皇后，0-1背包问题，图的着色旅行商问题，全排列问题等等； 如何理解“回溯算法”笼统的讲，回溯算法很多时候都应用在搜索这类问题上，不过这里说的搜索并不是狭义">
+<meta property="og:description" content="状态转移图：  /** * @Author: zyq-xiaoliuzi * @Description: * @Date: Created in 21:16 2020/8/11 * @Modified By: */  /** * 首先定义状态: *      dp[i][k][0] =&amp;gt; 第i天在交易第k次时没有持有股票 *      dp[i][k][1] =&amp;gt; 第i天在交易第k次时">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/06/16/回溯算法/八皇后.jpg">
-<meta property="og:updated_time" content="2020-06-16T13:55:14.754Z">
+<meta property="og:image" content="https://xiaodupi-zyq.github.io/2020/08/12/股票问题/状态转移图.png">
+<meta property="og:updated_time" content="2020-08-12T02:23:12.317Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="回溯算法">
-<meta name="twitter:description" content="回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想在前面的章节中，图的深度优先搜索算法利用的就是回溯算法想，这个算法思想非常简单，但是应用很广泛，但是很多软件开发场景中都使用到了，比如正则表达式算法、编译原理中的语法分析等； 除此之外还有数独，八皇后，0-1背包问题，图的着色旅行商问题，全排列问题等等； 如何理解“回溯算法”笼统的讲，回溯算法很多时候都应用在搜索这类问题上，不过这里说的搜索并不是狭义">
-<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2020/06/16/回溯算法/八皇后.jpg">
+<meta name="twitter:title" content="股票问题">
+<meta name="twitter:description" content="状态转移图：  /** * @Author: zyq-xiaoliuzi * @Description: * @Date: Created in 21:16 2020/8/11 * @Modified By: */  /** * 首先定义状态: *      dp[i][k][0] =&amp;gt; 第i天在交易第k次时没有持有股票 *      dp[i][k][1] =&amp;gt; 第i天在交易第k次时">
+<meta name="twitter:image" content="https://xiaodupi-zyq.github.io/2020/08/12/股票问题/状态转移图.png">
 
 
 
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2020/06/16/回溯算法/">
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2020/08/12/股票问题/">
 
 
 
@@ -145,7 +145,7 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <title>回溯算法 | 小六子的鱼的个人博客</title>
+  <title>股票问题 | 小六子的鱼的个人博客</title>
   
 
 
@@ -283,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2020/06/16/回溯算法/">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2020/08/12/股票问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小六子的鱼">
@@ -300,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">回溯算法</h1>
+          <h1 class="post-title" itemprop="name headline">股票问题</h1>
         
 
         <div class="post-meta">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-16T21:54:59+08:00">
-                2020-06-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-12T09:56:21+08:00">
+                2020-08-12
               </time>
             
 
@@ -331,8 +331,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/06/16/回溯算法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/06/16/回溯算法/" itemprop="commentsCount"></span>
+                <a href="/2020/08/12/股票问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/08/12/股票问题/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -365,151 +365,335 @@
       
 
       
-        <h1 id="回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想"><a href="#回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想" class="headerlink" title="回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想"></a>回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想</h1><p>在前面的章节中，图的深度优先搜索算法利用的就是回溯算法想，这个算法思想非常简单，但是应用很广泛，但是很多软件开发场景中都使用到了，比如正则表达式算法、编译原理中的语法分析等；</p>
-<p>除此之外还有数独，八皇后，0-1背包问题，图的着色旅行商问题，全排列问题等等；</p>
-<h2 id="如何理解“回溯算法”"><a href="#如何理解“回溯算法”" class="headerlink" title="如何理解“回溯算法”"></a>如何理解“回溯算法”</h2><p>笼统的讲，回溯算法很多时候都应用在搜索这类问题上，不过这里说的搜索并不是狭义的图的搜索，而是在一组可能的解中搜索满足期望的解；</p>
-<p>回溯的处理思想，优点类似于枚举搜索，我们枚举所有的解，找到满足期望的解，为了有规律的枚举可能的解，避免遗漏和重复，我们把问题的求解过程分为很多阶段。每个阶段我们都会面对一个岔路口，我们先任意选择一条路走，当发现这条路走不通的时候，就回退到上一个岔路口，另选一条走法继续走；</p>
-<p>一个比较经典的问题：八皇后的问题；</p>
-<p>我们有一个8*8的棋盘，希望往里面放8个棋子，每个棋子所在的行列对角线都不能有另一个棋子。你可以看到下面的画，第一幅画就是满足条件的一种方法，第二幅就不满足条件，八皇后问题就是期望找到所有满足这种要求的放棋子方法。</p>
-<p><img src="/2020/06/16/回溯算法/八皇后.jpg" alt="八皇后"></p>
-<p>我们把问题分成8个阶段，依次将8个棋子放到第一行，第二行到第八行，在放置的过程中，我们不断的检查当前放法，是否满足要求，如果满足就跳到下一行继续放棋子；不满足就再换一种放法；</p>
-<p>翻译成代码如下：</p>
-<pre><code>//全局变量，下标代表行，值表示queen存储在那一列
-int[] result = new int[8];
+        <p>状态转移图：</p>
+<p><img src="/2020/08/12/股票问题/状态转移图.png" alt="状态转移图"></p>
+<pre><code>/**
+* @Author: zyq-xiaoliuzi
+* @Description:
+* @Date: Created in 21:16 2020/8/11
+* @Modified By:
+*/
 
 /**
- *调用方式 cal8queens(0)
- * @param row
- */
-public void cal8queens(int row){
-    //8个棋子都放好了
-    if(row == 8){
-        printQueens(result);
-        return ;
-    }
-    //每一行都有8个方法
-    for(int col = 0; col &lt; 8;col++){
-        if(isOk(row,col)){ //有些放法不满足要求
-            result[row] = col; //第row行的棋子放在了col行
-            cal8queens(row+1); //考察下一行
-        }
-    }
-}
-
-/**
- * 判断row行棋子放在col列是否合适
- * @param row
- * @param col
+* 首先定义状态:
+*      dp[i][k][0] =&gt; 第i天在交易第k次时没有持有股票
+*      dp[i][k][1] =&gt; 第i天在交易第k次时持有股票
+* 理解状态转移方程
+*      “更准确的说 k 的次数可以是买了k次，下面的交易k次用买了k次去理解就会好理解了，买才是一次交易，卖只是完成这次交易”
+*
+*      dp[i][k][0] 该状态只能由 《前一天 已经交易k次 没有持有股票在今天保存不变（dp[i - 1][k][0]）》
+*      和 《 前一天 已经交易k次 持有股票在今天出售（dp[i - 1][k][1] + prices[i]） 得来;
+*      ====&gt; dp[i][k][0] = Max(dp[i - 1][k][0],dp[i - 1][k][1] + prices[i]);
+*
+*      dp[i][k][1] 该状态只能由 《前一天 已经交易k次 持有股票在今天保存不变（dp[i - 1][k][1]）》
+*      和 《 前一天 已经交易k - 1次 没有持有股票在今天买入（dp[i - 1][k - 1][0] - prices[i]） 得来;
+*      ====&gt; dp[i][k][1] = Max(dp[i - 1][k][1],dp[i - 1][k - 1][0] - prices[i]);
+*
+* 初始值；
+*      dp[-1][k][0] = 0
+*      解释：因为 i 是从 0 开始的，所以 i = -1 意味着还没有开始，这时候的利润当然是 0 。
+*      dp[-1][k][1] = -infinity
+*      解释：还没开始的时候，是不可能持有股票的，用负无穷表示这种不可能。
+*      dp[i][0][0] = 0
+*      解释：因为 k 是从 1 开始的，所以 k = 0 意味着根本不允许交易，这时候利润当然是 0 。
+*      dp[i][0][1] = -infinity
+*      解释：不允许交易的情况下，是不可能持有股票的，用负无穷表示这种不可能。
+*
+*      如果无法理解-1，可以直接定义
+*          dp[0][k][0] = 0，在 i = 0时，也就是第一天，可以做交易的情况下，没有持股，所以收益为 0；
+*          dp[0][k][1] = -prices[0], 在 i = 0时，也就是第一天，可以做交易的情况下，持股，所以收益为 -prices[0]；
+*      再来理解 k = 0，此时说明无法做交易，最大交易为 0 次，所有不管是到第几天，此时收益都是0；
+*          dp[i][0][0] = 0;
+*          dp[i][0][1] = -infinity
+*
+*/
+</code></pre><p><strong>多种股票问题；</strong></p>
+<p><strong>1. 买卖一次</strong><br><strong>2. 买卖无限次</strong><br><strong>3. 买卖两次</strong><br><strong>4. 买卖k次</strong><br><strong>5. 买卖无限次，含一天冷冻期</strong><br><strong>6. 买卖无限次，含费率</strong></p>
+<pre><code>/**
+ * 只能买卖一次，获取最大值，更新最小值，以及更新获利的最大值，最后返回
+ * @param prices
  * @return
  */
-public boolean isOk(int row,int col){
-    int leftup = col - 1;
-    int rightup = col + 1;
-    for(int i = row - 1; i &gt;= 0;i--){
-        //考察正上方是否合适
-        if(result[i] == col){
-            return false;
-        }
-        //考察左上方是否合适
-        if(leftup &gt;= 0){
-            if(result[i] == leftup){
-                return false;
-            }
-        }
-        //考察右上方是否合适
-        if(rightup &lt; 8){
-            if(result[i] == rightup){
-                return false;
-            }
-        }
-        leftup--;
-        rightup++;
-    }
-    return true;
-}
+public int maxProfit1(int[] prices) {
+    /**
+     *
+     int min = Integer.MAX_VALUE;
+     int money = 0;
+     int len = prices.length;
+     for(int i = 0; i &lt; len; i++){
+     if(prices[i] &lt; min){
+     min = prices[i];
+     }
+     if(prices[i] - min &gt; money){
+     money = prices[i] - min;
+     }
+     }
+     return money;
+     **/
 
-/**
- * 打印
- * @param result
- */
-private void printQueens(int[] result){
-    for(int row = 0; row &lt; 8; row++){
-        for(int col = 0; col &lt; 8; col++){
-            if(result[row] == col){
-                System.out.print(&quot;Q &quot;);
-            }else{
-                System.out.print(&quot;* &quot;);
-            }
-        }
-        System.out.println();
+    -------------------------------------------------------------------------------------
+
+    //dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + prices[i])
+    //dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0] - prices[i])
+    //k = 1;
+    //初始化
+    int len = prices.length;
+    if(len &lt; 2){
+        return 0;
     }
-    System.out.println();
+    int[][] dp = new int[len][2];
+    dp[0][0] = 0;
+    dp[0][1] =  -prices[0];
+    for(int i = 1; i &lt; len; i++){
+        dp[i][0] = Math.max(dp[i - 1][0],dp[i - 1][1] + prices[i]);
+        //  k - 1 = 0,所以dp[i-1][k-1][0] - prices[i] = dp[i-1][0][0] = 0;
+        dp[i][1] = Math.max(dp[i - 1][1],-prices[i]);
+    }
+    return dp[len - 1][0];
 }
-</code></pre><h2 id="两个回溯算法中的经典应用"><a href="#两个回溯算法中的经典应用" class="headerlink" title="两个回溯算法中的经典应用"></a>两个回溯算法中的经典应用</h2><h3 id="1、0-1背包"><a href="#1、0-1背包" class="headerlink" title="1、0-1背包"></a>1、0-1背包</h3><p>0-1背包问题有很多变体，介绍一种比较基础的，我们有一个背包，背包的总承重是Wkg，现在我们有 n 个物品，每个物品的重量不等，并且不可分割。我们现在期望选择几件物品，装载到背包中。在不超过背包所能装载重量的前提下，如何让背包中物品的总重量最大？</p>
-<p>对于每个物品来说装进背包或者不装进背包，对于n个物品总的装法就有2^n种，去掉重量超过Wkg的，从剩下的装法中选择重量最接近Wkg的。不过我们如何才能不重复的穷举这2^n种方法呢？</p>
-<p>回溯的方法，我们将物品一次放进排列，整个问题被分解成n阶段，每个阶段对应一个物品如何选择，先对第一个物品进行处理，选择装进去或者不装进去，然后在递归的处理下面的物品；</p>
-<p>代码如下：</p>
+</code></pre><hr>
 <pre><code>/**
- * f(0,0,a,10,100)
- * @param i 表示考察到那个物品了
- * @param cw 表示当前已经装进去的物品总重量
- * @param items 表示每个物品的重量
- * @param n 表示物品个数
- * @param w 背包重量
+ * 可以买卖多次，但是买卖之前必须售出，获取最大值，找到峰值和峰谷，两个值相减即可
+ * @param prices
+ * @return
  */
-public void f(int i,int cw,int[] items,int n,int w){
-    //cw == w表示装满了，i== n表示考察完所以的物品了
-    if(cw == w || i == n){
-        if(cw &gt; maxW) maxW = cw;
-        return;
+public int maxProfit2(int[] prices) {
+    /**
+     int max = 0;
+     int start = 0;
+     int len = prices.length;
+     int end = len - 1;
+     int i = 0;
+     while(i &lt; len - 1){
+     //注意逻辑表达式的截断效应
+     while(i &lt; len - 1 &amp;&amp; prices[i] &gt;= prices[i + 1]){
+     i++;
+     }
+     start = i;
+     while(i &lt; len - 1 &amp;&amp; prices[i] &lt; prices[i + 1]){
+     i++;
+     }
+     end = i;
+     max += (prices[end] - prices[start]);
+     }
+     return max;
+     **/
+
+    -------------------------------------------------------------------------------------
+
+    int len = prices.length;
+    if (len &lt; 2){
+        return 0;
     }
-    f(i+1,cw,items,n,w);
-    // 已经超过可以背包承受的重量的时候，就不要再装了
-    if(cw + items[i] &lt;= w){
-        f(i+1,cw+items[i],items,n,w);
+    int[][] dp = new int[len][2];
+    /**
+     dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + prices[i])
+     dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0] - prices[i])
+     k = inf，所以k == k-1，原始公式简化为
+     dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + prices[i])
+     dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k][0] - prices[i])
+     同样都是k，k就没有用途了，可以直接省略了
+     dp[i][0] = max(dp[i-1][0],dp[i-1][1] + prices[i])
+     dp[i][1] = max(dp[i-1][1],dp[i-1][0] - prices[i])
+     **/
+    //初始化
+    dp[0][0] = 0;
+    dp[0][1] = -prices[0];
+    for(int i = 1; i &lt; len; i++){
+        dp[i][0] = Math.max(dp[i - 1][0],dp[i - 1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i - 1][1],dp[i - 1][0] - prices[i]);
+    }
+    return dp[len - 1][0];
+
+}
+</code></pre><hr>
+<pre><code>/**
+ * 可以交易两次，最后得到最大收益
+ * @param prices
+ * @return
+ */
+public int maxProfit3(int[] prices) {
+    /**
+     int len = prices.length;
+     if(len &lt; 2){
+     return 0;
+     }
+
+     int[][] dp = new int[len][5];
+     /**根据状态转移图来看一共有五种状态，什么都不操作，买第一次，卖第一次，买第二次，卖第二次，且最大值出现在第一，三，五状态中；
+     * 初始化，对于第一天来说，什么都不操作，获益是0，买第一次获益是 -prices[0]，在第一天中，后面三者状态不会出现所以后面三者都是MIN_VALUE
+     * 初始化可以写成如下
+     *
+     dp[0][0] = 0;
+     dp[0][1] = -prices[0];
+     dp[0][2] = Integer.MIN_VALUE;
+     dp[0][3] = Integer.MIN_VALUE;
+     dp[0][4] = Integer.MIN_VALUE;
+     for(int i = 1; i &lt; len; i++){
+     //每种状态都只有当前状态不操作，和昨天前一种状态在今天发生了操作得来的
+     dp[i][0] = 0;
+     dp[i][1] = Math.max(dp[i - 1][1],dp[i][0] - prices[i]);
+     dp[i][2] = Math.max(dp[i - 1][2],dp[i][1] + prices[i]);
+     dp[i][3] = Math.max(dp[i - 1][3],dp[i][2] - prices[i]);
+     dp[i][4] = Math.max(dp[i - 1][4],dp[i][3] + prices[i]);
+     }
+     return Math.max(Math.max(dp[len - 1][0],dp[len - 1][2]),dp[len - 1][4]);
+     **/
+
+    -------------------------------------------------------------------------------------
+
+    int len = prices.length;
+    if(len &lt; 2){
+        return 0;
+    }
+    /**
+     * dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + price[i])
+     * dp[i][k][0] = max(dp[i-1][k][1],dp[i-1][k-1][0] - price[i])
+     * k = 2;
+     */
+    //初始化
+    int[][][] dp = new int[len][2 + 1][2];
+
+    for(int i = 0; i &lt; len; i++){
+        for(int j = 0; j &lt;= 2; j++){
+            if(i == 0){
+                dp[i][j][0] = 0;
+                dp[i][j][1] = -prices[i];
+                continue;
+            }
+            if(j == 0){
+                dp[i][j][0] = 0;
+                dp[i][j][1] = Integer.MIN_VALUE;
+                continue;
+            }
+            dp[i][j][0] = Math.max(dp[i - 1][j][0],dp[i - 1][j][1] + prices[i]);
+            dp[i][j][1] = Math.max(dp[i - 1][j][1],dp[i - 1][j - 1][0] - prices[i]);
+        }
+    }
+    return dp[len - 1][2][0];
+}
+</code></pre><hr>
+<pre><code>/**
+ * 最多交易k次，每天只能买卖一次，所以如果交易次数k &gt; n/2则最后等于是无限制的买卖
+ * @param k
+ * @param prices
+ * @return
+ */
+public int maxProfit4(int k, int[] prices) {
+    int len = prices.length;
+    if(len &lt; 2){
+        return 0;
+    }
+
+    if(k &gt; len / 2){
+        /**
+         * 无限制买卖，
+         */
+        int[][] dp = new int[len][2];
+        for(int i = 0; i &lt; len; i++){
+            if(i == 0){
+                dp[i][0] = 0;
+                dp[i][1] = 0 - prices[0];
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i - 1][0],dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1],dp[i - 1][0] - prices[i]);
+        }
+        return dp[len-1][0];
+    }else{
+        int[][][] dp = new int[len][k + 1][2];
+
+        /**
+         * 初始化
+         * 第一天，无法交易，没有持有股票 dp[0][0][0] = 0;
+         * 第一天，无法交易，不允许持有股票，dp[0][0][1] = -inf;//不可能出现这种情况
+         * 第一天，可以交易(k &gt; 0),没有持有股票，dp[0][k][0] = 0;//没有股票收益为0；
+         * 第一天，可以交易(k &gt; 0),持有股票，dp[0][k][1] = -price[0];//没有股票收益为0；
+         */
+        for(int i = 0; i &lt; len;i++){
+            for(int j = 0; j &lt;= k; j++){
+                if(i == 0){
+                    dp[i][j][0] = 0;
+                    dp[i][j][1] = -prices[0];
+                    continue;
+                }
+                if(j == 0){
+                    dp[i][j][0] = 0;
+                    dp[i][j][1] = Integer.MIN_VALUE;
+                    continue;
+                }
+                dp[i][j][0] = Math.max(dp[i - 1][j][0],dp[i - 1][j][1] + prices[i]);
+                dp[i][j][1] = Math.max(dp[i - 1][j][1],dp[i - 1][j - 1][0] - prices[i]);
+            }
+        }
+        return dp[len-1][k][0];
     }
 }
-</code></pre><h3 id="2、正则表达式"><a href="#2、正则表达式" class="headerlink" title="2、正则表达式"></a>2、正则表达式</h3><p>正则表达式中，最重要的就是通配符，通配符结合在一起，可以表达非常丰富的语义。为了方便讲解，我假设正则表达式中只包含“<em>”和“?”这两种通配符，并且对这两个通配符的语义稍微做些改变，其中，“</em>”匹配任意多个（大于等于 0 个）任意字符，“?”匹配零个或者一个任意字符。基于以上背景假设，我们看下，如何用回溯算法，判断一个给定的文本，能否跟给定的正则表达式匹配？</p>
-<p>我们依次考察正则表达式中的每个字符，当是非通配符的时候，就直接跟文本字符进行匹配，如果相同就继续往下处理，如果不相同就回溯；</p>
-<p>如果遇到特殊字符的时候，我们就有多种处理方式，这就是所谓的岔路口，比如“*”有多种匹配方案，可以匹配任意个文本串中的字符，我们就随意选择一种匹配方案，然后继续考察剩下的字符，如果中途发现无法匹配下去，我们就回到这个岔路口，重新选择一种方案，然后在继续匹配下去；</p>
-<p>代码如下：</p>
-<pre><code>public class Pattern {
-    private boolean matched = false;
-    private char[] pattern; //正则表达式
-    private int plen; //正则表达式长度
-
-    public Pattern(char[] pattern,int plen){
-        this.pattern = pattern;
-        this.plen = plen;
+</code></pre><hr>
+<pre><code>/**
+ * 无限次卖出，加一天冷冻期
+ * @param prices
+ * @return
+ */
+public int maxProfit(int[] prices) {
+    int len = prices.length;
+    if(len &lt; 2){
+        return 0;
     }
-
-    public boolean match(char[] text,int tlen){
-        matched = false;
-        rmatch(0,0,text,tlen);
-        return matched;
+    /**
+     * dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0] - prices[i])
+     * k = inf,所以 k-1 == k
+     * dp[i][0] = max(dp[i-1][0],dp[i-1][1] + prices[i])
+     * dp[i][1] = max(dp[i-1][1],dp[i-1][0] - prices[i])
+     * 冷冻期，所以
+     * dp[i][1] = max(dp[i-1][1],dp[i-2][0] - prices[i])
+     */
+    //初始化
+    int[][] dp = new int[len][2];
+    dp[0][0] = 0;
+    dp[0][1] = -prices[0];
+    int dp_pre = 0;
+    for(int i = 1; i &lt; len; i++){
+        dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i-1][1],dp_pre - prices[i]);
+        dp_pre = dp[i - 1][0];
     }
-
-    private void rmatch(int ti,int pj,char[] text,int tlen){
-        if(matched)return;
-        if(pj == plen){ //正则表达式结尾了
-            if(ti == tlen){ // 文本串也结尾了
-                matched = true;
-            }
-            return;
-        }
-        if(pattern[pj] == &apos;*&apos;){ //匹配任意个字符
-            for(int k = 0; k &lt; tlen - ti; k++){
-                rmatch(ti + k,pj + 1,text,tlen);
-            }
-        }else if(pattern[pj] == &apos;?&apos;){ //匹配0个或者1个字符
-            rmatch(ti,pj+1,text,tlen);
-            rmatch(ti+1,pj+1,text,tlen);
-        }else if(ti &lt; tlen &amp;&amp; pattern[pj] == text[ti]){ //字符匹配才行
-            rmatch(ti+1,pj+1,text,tlen);
-        }
-    }
+    return dp[len - 1][0];
 }
-</code></pre><h2 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h2><p>现在我们对今天讲到的 0-1 背包问题稍加改造，如果每个物品不仅重量不同，价值也不同。如何在不超过背包重量的情况下，让背包中的总价值最大？</p>
+</code></pre><hr>
+<pre><code>/**
+ * 无限次买，有费率
+ * @param prices
+ * @param fee
+ * @return
+ */
+public int maxProfit(int[] prices, int fee) {
+    int len = prices.length;
+    if(len &lt; 2){
+        return 0;
+    }
+    /**
+     * dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0] - prices[i])
+     * k = inf,所以 k-1 == k
+     * dp[i][0] = max(dp[i-1][0],dp[i-1][1] + prices[i])
+     * dp[i][1] = max(dp[i-1][1],dp[i-1][0] - prices[i])
+     * 有费率，所以
+     * dp[i][0] = max(dp[i-1][0],dp[i-1][1] + prices[i] - fee)
+     */
+    //初始化
+    int[][] dp = new int[len][2];
+    dp[0][0] = 0;
+    dp[0][1] = -prices[0];
+    for(int i = 1; i &lt; len; i++){
+        dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1] + prices[i] - fee);
+        dp[i][1] = Math.max(dp[i-1][1],dp[i-1][0] - prices[i]);
+    }
+    return dp[len - 1][0];
+}
+</code></pre><p>}</p>
+<p>参考文章：<br><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/yi-ge-tong-yong-fang-fa-tuan-mie-6-dao-gu-piao-w-5/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/yi-ge-tong-yong-fang-fa-tuan-mie-6-dao-gu-piao-w-5/</a></p>
 
       
     </div>
@@ -563,8 +747,8 @@ public void f(int i,int cw,int[] items,int n,int w){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/16/贪心算法/" rel="next" title="贪心算法">
-                <i class="fa fa-chevron-left"></i> 贪心算法
+              <a href="/2020/06/16/索引与数据库相关/" rel="next" title="索引与数据库相关：B+树，索引，Redis实战相关总结">
+                <i class="fa fa-chevron-left"></i> 索引与数据库相关：B+树，索引，Redis实战相关总结
               </a>
             
           </div>
@@ -572,10 +756,6 @@ public void f(int i,int cw,int[] items,int n,int w){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/06/16/分治算法/" rel="prev" title="分治算法">
-                分治算法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -634,17 +814,8 @@ public void f(int i,int cw,int[] items,int n,int w){
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -739,22 +910,6 @@ public void f(int i,int cw,int[] items,int n,int w){
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想"><span class="nav-number">1.</span> <span class="nav-text">回溯算法：从电影蝴蝶效应中学习回溯算法的核心思想</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何理解“回溯算法”"><span class="nav-number">1.1.</span> <span class="nav-text">如何理解“回溯算法”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两个回溯算法中的经典应用"><span class="nav-number">1.2.</span> <span class="nav-text">两个回溯算法中的经典应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、0-1背包"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、0-1背包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、正则表达式"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、正则表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#课后思考"><span class="nav-number">1.3.</span> <span class="nav-text">课后思考</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
