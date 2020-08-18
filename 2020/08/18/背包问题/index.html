@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="admin后台设置字段为空，很多时候我们的数据库数据在建立之初不会有值，但又不能没有这个字段，比如学生管理系统中的选课表，在这个表中至少有以下几个字段，即：学生学号，课程号，成绩。直接上代码： 例如：     class Stu_cou(models.Model):         student_number = models.ForeignKey(Student,on_delete=model">
+<meta name="description" content="背包问题有一个容量为N的背包，要用这个背包装下物品的价值最大，这些物品有两个属性：体积 w 和价值 v ； 定义一个二维数组dp存储最大的价值，其中 dp[i][j] 表示前i件物品体积不超过j的情况下达到的最大价值； 设第i件物品体积为w，价值为v，根据第i件物品是否添加到背包中，分为两种情况讨论：  第i件物品没有放入背包，dp[i][j] = dp[i - 1][j]; 第i件物品放入背包后">
 <meta property="og:type" content="article">
-<meta property="og:title" content="django数据库空值（admin字段空值保存）">
-<meta property="og:url" content="https://xiaodupi-zyq.github.io/2019/04/19/django数据库空值（admin字段空值保存）/index.html">
+<meta property="og:title" content="‘背包问题’">
+<meta property="og:url" content="https://xiaodupi-zyq.github.io/2020/08/18/背包问题/index.html">
 <meta property="og:site_name" content="小六子的鱼的个人博客">
-<meta property="og:description" content="admin后台设置字段为空，很多时候我们的数据库数据在建立之初不会有值，但又不能没有这个字段，比如学生管理系统中的选课表，在这个表中至少有以下几个字段，即：学生学号，课程号，成绩。直接上代码： 例如：     class Stu_cou(models.Model):         student_number = models.ForeignKey(Student,on_delete=model">
+<meta property="og:description" content="背包问题有一个容量为N的背包，要用这个背包装下物品的价值最大，这些物品有两个属性：体积 w 和价值 v ； 定义一个二维数组dp存储最大的价值，其中 dp[i][j] 表示前i件物品体积不超过j的情况下达到的最大价值； 设第i件物品体积为w，价值为v，根据第i件物品是否添加到背包中，分为两种情况讨论：  第i件物品没有放入背包，dp[i][j] = dp[i - 1][j]; 第i件物品放入背包后">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-19T08:37:10.000Z">
+<meta property="og:updated_time" content="2020-08-18T07:26:01.169Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="django数据库空值（admin字段空值保存）">
-<meta name="twitter:description" content="admin后台设置字段为空，很多时候我们的数据库数据在建立之初不会有值，但又不能没有这个字段，比如学生管理系统中的选课表，在这个表中至少有以下几个字段，即：学生学号，课程号，成绩。直接上代码： 例如：     class Stu_cou(models.Model):         student_number = models.ForeignKey(Student,on_delete=model">
+<meta name="twitter:title" content="‘背包问题’">
+<meta name="twitter:description" content="背包问题有一个容量为N的背包，要用这个背包装下物品的价值最大，这些物品有两个属性：体积 w 和价值 v ； 定义一个二维数组dp存储最大的价值，其中 dp[i][j] 表示前i件物品体积不超过j的情况下达到的最大价值； 设第i件物品体积为w，价值为v，根据第i件物品是否添加到背包中，分为两种情况讨论：  第i件物品没有放入背包，dp[i][j] = dp[i - 1][j]; 第i件物品放入背包后">
 
 
 
@@ -121,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2019/04/19/django数据库空值（admin字段空值保存）/">
+  <link rel="canonical" href="https://xiaodupi-zyq.github.io/2020/08/18/背包问题/">
 
 
 
@@ -143,7 +143,7 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <title>django数据库空值（admin字段空值保存） | 小六子的鱼的个人博客</title>
+  <title>‘背包问题’ | 小六子的鱼的个人博客</title>
   
 
 
@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2019/04/19/django数据库空值（admin字段空值保存）/">
+    <link itemprop="mainEntityOfPage" href="https://xiaodupi-zyq.github.io/2020/08/18/背包问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小六子的鱼">
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">django数据库空值（admin字段空值保存）</h1>
+          <h1 class="post-title" itemprop="name headline">‘背包问题’</h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T16:18:58+08:00">
-                2019-04-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-18T15:24:46+08:00">
+                2020-08-18
               </time>
             
 
@@ -329,8 +329,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/19/django数据库空值（admin字段空值保存）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/04/19/django数据库空值（admin字段空值保存）/" itemprop="commentsCount"></span>
+                <a href="/2020/08/18/背包问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/08/18/背包问题/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -363,20 +363,81 @@
       
 
       
-        <p>admin后台设置字段为空，很多时候我们的数据库数据在建立之初不会有值，但又不能没有这个字段，比如学生管理系统中的选课表，在这个表中至少有以下几个字段，即：学生学号，课程号，成绩。直接上代码：</p>
-<pre><code>例如：
-    class Stu_cou(models.Model):
-        student_number = models.ForeignKey(Student,on_delete=models.CASCADE,verbose_name=&apos;选课学生&apos;)
-        course_number = models.ForeignKey(Course,on_delete=models.CASCADE,verbose_name=&apos;课程号&apos;)
-        score = models.FloatField(&apos;成绩&apos;)
-在表中定义了一个学生选课表。
-但是在后台admin添加或者前端创建一条实例的时候，成绩不可能有值的，这个时候数据库是不会存储成绩的数据的，这个时候我们应该设置字段可空。则最后一个成绩字段应该设置为：
-        score = models.FloatField(&apos;成绩&apos;,blank=True,null=True)
-    其中：
-        null = True
-        数据库字段可为空值
-        blank = True
-        django的Admin中添加数据允许空值。
+        <h1 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h1><p>有一个容量为N的背包，要用这个背包装下物品的价值最大，这些物品有两个属性：体积 <code>w</code> 和价值 <code>v</code> ；</p>
+<p>定义一个二维数组<code>dp</code>存储最大的价值，其中 <code>dp[i][j]</code> 表示前i件物品体积不超过j的情况下达到的最大价值；</p>
+<p>设第i件物品体积为w，价值为v，根据第i件物品是否添加到背包中，分为两种情况讨论：</p>
+<ol>
+<li>第i件物品没有放入背包，<code>dp[i][j] = dp[i - 1][j]</code>;</li>
+<li>第i件物品放入背包后，<code>dp[i][j] = dp[i - 1][j - w] + v</code></li>
+</ol>
+<p>第i件物品是否添加，取决于那种情况最大价值更大。因此转移方程是：</p>
+<pre><code>dp[i][j] = Math.max(dp[i - 1][j],dp[i - 1][j - w] + v);
+</code></pre><p>所以最基本的01背包代码为：</p>
+<pre><code>public int knapsack(int W, int N, int[] weights, int[] values) {
+    int[][] dp = new int[N + 1][W + 1];
+    for (int i = 1; i &lt;= N; i++) {
+        int w = weights[i - 1], v = values[i - 1];
+        for (int j = 1; j &lt;= W; j++) {
+            if (j &gt;= w) {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - w] + v);
+            } else {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+    return dp[N][W];
+}
+</code></pre><p><strong>空间优化</strong></p>
+<p>每一件物品的状态仅仅只和前一件物品相关，所以可以优化转移方程为：</p>
+<pre><code>dp[j] = max(dp[j],dp[j - w] + v);
+</code></pre><p>因为 <code>dp[j - w]</code> 表示 <code>dp[i - 1][j - w]</code>, 因此不能先求 <code>dp[i][j-w]</code>, 以防将 <code>dp[i - 1][j - w]</code> 覆盖；也就是说要先计算 <code>dp[i][j]</code> 再计算 <code>dp[i][j - w]</code>; 所以写程序时候要进行倒序来实现循环；</p>
+<pre><code>public int knapsack(int W, int N, int[] weights, int[] values) {
+    int[] dp = new int[W + 1];
+    for (int i = 1; i &lt;= N; i++) {
+        int w = weights[i - 1], v = values[i - 1];
+        for (int j = W; j &gt;= 1; j--) {
+            if (j &gt;= w) {
+                dp[j] = Math.max(dp[j], dp[j - w] + v);
+            }
+        }
+    }
+    return dp[W];
+}
+</code></pre><p><strong>变种题</strong><br><strong>1. 完全背包</strong>： 物品数量为无限个；<br><strong>2. 多重背包</strong>： 物品数量有限制；<br><strong>3. 多维费用背包</strong>： 物品不仅有重量，有体积，还要考虑两种限制；<br><strong>4. 其他</strong>： 物品之间相互约束或者依赖；</p>
+<p>参考链接：<a href="https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/</a></p>
+<p><strong>01问题</strong><br><a href="https://leetcode-cn.com/problems/partition-equal-subset-sum/description/" target="_blank" rel="noopener">416. 分割等和子集</a><br><a href="https://leetcode-cn.com/problems/target-sum/description/" target="_blank" rel="noopener">494. 目标和</a></p>
+<p><strong>多维费用背包</strong><br><a href="https://leetcode-cn.com/problems/ones-and-zeroes/description/" target="_blank" rel="noopener">474. 一和零</a></p>
+<p><strong>完全背包</strong><br><a href="https://leetcode-cn.com/problems/coin-change/description/" target="_blank" rel="noopener">322. 零钱兑换</a><br><a href="https://leetcode-cn.com/problems/coin-change-2/description/" target="_blank" rel="noopener">518. 零钱兑换 II</a></p>
+<p><strong>涉及顺序的完全背包</strong><br><a href="https://leetcode-cn.com/problems/word-break/" target="_blank" rel="noopener">139. 单词拆分</a><br><a href="https://leetcode-cn.com/problems/combination-sum-iv/description/" target="_blank" rel="noopener">377. 组合总和 Ⅳ</a></p>
+<p>在上面的基础上，将问题继续分为三类：</p>
+<p><strong>1、组合问题</strong><br><a href="https://leetcode-cn.com/problems/combination-sum-iv/description/" target="_blank" rel="noopener">377. 组合总和 Ⅳ</a><br><a href="https://leetcode-cn.com/problems/target-sum/description/" target="_blank" rel="noopener">494. 目标和</a><br><a href="https://leetcode-cn.com/problems/coin-change-2/description/" target="_blank" rel="noopener">518. 零钱兑换 II</a></p>
+<p><strong>2、存在问题</strong><br><a href="https://leetcode-cn.com/problems/word-break/" target="_blank" rel="noopener">139. 单词拆分</a><br><a href="https://leetcode-cn.com/problems/partition-equal-subset-sum/description/" target="_blank" rel="noopener">416. 分割等和子集</a></p>
+<p><strong>3、最值问题</strong><br><a href="https://leetcode-cn.com/problems/ones-and-zeroes/description/" target="_blank" rel="noopener">474. 一和零</a><br><a href="https://leetcode-cn.com/problems/coin-change/description/" target="_blank" rel="noopener">322. 零钱兑换</a></p>
+<p>组合问题的一般性转移方程为：</p>
+<pre><code>dp[i] += dp[i - num];
+</code></pre><p>存在问题的一般性转移方程是：</p>
+<pre><code>dp[i] = dp[i] or dp[i - num];
+</code></pre><p>最值问题的一般性转移方程是：</p>
+<pre><code>dp[i] = min(dp[i],dp[i-num]+1)或者max；
+</code></pre><p><strong>看到问题之后需要思考几个步骤：</strong><br><strong>1. 分析是否为背包问题</strong><br><strong>2. 上述背包问题中的哪一种，才可以确定一般性的转移方程</strong><br><strong>3. 确定是01背包，完全背包还是多维费用背包，主要判断数组中数字是否可以重复使用，有无多维条件限制</strong><br><strong>4. 是否需要考虑元素之间的顺序</strong></p>
+<p><strong>解题技巧</strong><br><strong>1. 如果是01背包问题，元素不可重复使用，nums放到外循环，target放在内循环，且循环倒序</strong></p>
+<pre><code>for(int num : nums){
+    for(int i = target; i &gt;= num; i--){
+        /.../
+    }
+}
+</code></pre><p><strong>2. 如果是完全背包，即数组中元素可以重复使用，nums放在外循环，target放在内循环，且循环正序</strong></p>
+<pre><code>for(int num : nums){
+    for(int i = num; i &lt;= target; i++){
+        /.../
+    }
+}
+</code></pre><p><strong>3. 如果组合问题需要元素之间的顺序，需要将target放在外循环，将nums放在内循环</strong></p>
+<pre><code>for(int i = 0; i &lt;= target; i++){
+    for(int num : nums){
+        /.../
+    }
+}
 </code></pre>
       
     </div>
@@ -430,8 +491,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/18/django数据库OnetoOnefield的一些错误/" rel="next" title="django数据库OnetoOnefield的一些错误">
-                <i class="fa fa-chevron-left"></i> django数据库OnetoOnefield的一些错误
+              <a href="/2020/08/12/股票问题/" rel="next" title="股票问题">
+                <i class="fa fa-chevron-left"></i> 股票问题
               </a>
             
           </div>
@@ -439,10 +500,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/11/12/LinkedList/" rel="prev" title="LinkedList">
-                LinkedList <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -501,8 +558,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -597,6 +663,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背包问题"><span class="nav-number">1.</span> <span class="nav-text">背包问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
